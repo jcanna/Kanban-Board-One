@@ -1,0 +1,234 @@
+/*
+    Macromedia Flex ASDoc CSS
+    Copyright 2005 Macromedia Inc. All rights reserved.
+*/
+
+html {
+	overflow-x:hidden;
+	overflow-y:auto;
+}
+
+#header {
+	padding: 0;
+	margin: 0;
+	border: 2px solid
+}
+
+/* Macromedia Flex ASDoc style classes*/
+body {
+	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	color: #000000;
+	background-color:#FFFFFF;
+}
+
+html body.MainContent {
+	padding-left: 5px;
+}
+
+/* IE */
+* html body.MainContent {
+      padding-right: 20px;
+}
+
+/* Mozilla */
+html>body.MainContent {
+	padding-right: 5px;
+}
+
+body, td, th {
+	font-size: 12px;
+}
+
+code {
+	font-family: "Courier New", Courier, monospace; 
+	font-size: 12px;
+}
+
+th	{
+	text-align: left;
+	font-weight: bold;
+	vertical-align: bottom;
+}
+
+table {
+	background-color: white;
+}
+
+table.withBorder {
+	border-color: #BBBBBB;
+	border-width: 1px;
+	border-style: solid;
+}
+
+.innertable {
+	border-collapse: collapse; /* to eliminate the default table cellspacing=2 */
+}
+
+.innertable th {
+	border: 1px solid #000000;
+	background:#DDDDDD;
+	padding: 2px 3px 2px 3px;
+}
+
+.innertable td {
+	border: 1px solid #000000;
+	padding: 2px 3px 2px 3px;
+}
+
+.paramSpacer {
+	height: 5px;
+}
+
+/* Custom Classes */
+.row0 {
+	background-color: #F2F2F2;
+}
+
+.row1 {
+	background-color: #FFFFFF;
+}
+
+.prow0 {
+	background-color: #F2F2F2;
+}
+
+.prow1 {
+	background-color: #FFFFFF;
+}
+
+.idxrow {
+	padding-top: 5px;
+}
+
+.SummaryTableHeader {
+    background-color: #CCCCCC;
+}
+
+.InheritedTableHeader {
+    background-color: #EEEEEE;
+}
+
+.PackageTableHeader {
+    background-color: #EEEEEE;
+}
+
+
+/* Links */
+a:link {
+	color: #0000CC;
+	text-decoration: none;
+}
+
+a:visited {
+    color: #0000CC;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #0000CC;
+}
+
+a:active {
+	text-decoration: none;
+	color: #CC0000;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6	{
+	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-weight: bold;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	letter-spacing: 1px;
+	width: 90%;
+}
+
+h1 {
+	font-size: 18px;
+}
+
+h2 {
+	font-size: 16px;
+}
+
+h3 {
+	font-size: 14px;
+}
+
+h4 {
+	font-size: 12px;
+	color: #666666;
+}
+
+h5 {
+	font-size: 11px;
+}
+.logoImage {
+	width: 64px;
+	height: 64px;
+}
+.topLinks {
+	margin-bottom: 0px;
+	white-space: nowrap;
+}
+.copyright {
+   margin-top: 30px;
+   color: #777777;
+   font-size: 10px;
+}
+.private {
+    color: #999999;
+}
+.flashonly {
+    display:none;
+    color: #000000;
+}
+.flexonly {
+    color: #000000;
+}
+.flashOnlyX {
+	display:none;
+	color: #00CCFF;
+}
+.liveDocsLink {
+/*	display:none; */
+}
+
+/* IE */
+* html .listing {
+   width: 93%;
+   padding-left: 6%;
+   padding-right: 5px;
+   padding-top: 5px;
+   padding-bottom: 5px;
+   overflow-x: auto;	
+   background-color: #F2F2F2;
+   margin-bottom: 10px;
+   margin-top: 10px;
+}
+
+/* Firefox, Netscape */
+html>body .listing pre
+{
+   overflow: auto;
+   padding-left: 40px;
+   padding-right: 5px;
+   padding-top: 5px;
+   padding-bottom: 5px;
+   background-color: #F2F2F2;
+   margin-top: 10px;
+   margin-bottom: 10px;
+}   
+
+.listingIcons
+{
+	padding: 0px;
+	margin-top: 10px;
+	height: 15px;
+}  
+
+.pageTop
+{
+	height:10px;
+}

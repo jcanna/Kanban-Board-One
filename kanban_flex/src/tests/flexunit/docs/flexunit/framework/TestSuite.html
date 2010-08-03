@@ -1,0 +1,392 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="TestSuite,flexunit.framework.TestSuite,testArrayList,name,className,toString,runWithResult,runNext,addTest,addTestSuite,getTestMethodNames,getTests,countTestCases,testCount" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'TestSuite - FlexUnit - ActionScript 3.0 Unit Testing Framework';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">FlexUnit - ActionScript 3.0 Unit Testing Framework</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;| <a href="../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../index.html?flexunit/framework/TestSuite.html&amp;./flexunit/framework/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>flexunit.framework<h1>Class TestSuite</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><script type="text/javascript">var showInheritance = false;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("flexunit.framework.TestSuite");</script>
+</pre>
+<br>
+<a name="implements"></a><b>All implemented interfaces</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../framework/Test.html">Test</a></td>
+</tr>
+</table>
+<hr>
+<p></p>public class <b>TestSuite</b>
+<p></p>
+<p></p>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#className"><b>className</b></a>:String</code>&nbsp;&nbsp;[read-only]<br> 
+ Returns the fully qualified class name.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#name"><b>name</b></a>:String</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#testArrayList"><b>testArrayList</b></a>:<a href="../utils/Collection.html">Collection</a></code></td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#TestSuite()"><b>TestSuite</b></a>(param:Object = null)</code>
+<br> 
+ The TestSuite constructor, provided with the test to be run.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#addTest()"><b>addTest</b></a>(test:<a href="../framework/Test.html">Test</a>) : void</code>
+<br> 
+ Adds a test to this test suite.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#addTestSuite()"><b>addTestSuite</b></a>(testClass:Class) : void</code>
+<br> 
+ Wraps a test inside a <code>TestSuite</code> and adds it to this test suite.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#countTestCases()"><b>countTestCases</b></a>() : Number</code>
+<br> 
+ Iterates all tests in this suite to calculate the total number of tests in this suite.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#getTestMethodNames()"><b>getTestMethodNames</b></a>() : Array</code>
+<br>
+ Returns the names of the test methods for this test.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#getTests()"><b>getTests</b></a>() : Array</code>
+<br>
+ Returns all the tests in this test suite as an <code>Array</code>
+ </td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#runNext()"><b>runNext</b></a>(result:<a href="../framework/TestResult.html">TestResult</a>) : void</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#runWithResult()"><b>runWithResult</b></a>(result:<a href="../framework/TestResult.html">TestResult</a>) : void</code>
+<br> 
+ Runs the test, populating <code>result</code> with the test results.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#testCount()"><b>testCount</b></a>() : Number</code>
+<br> 
+ The number of tests added to this suite.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#toString()"><b>toString</b></a>() : String</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="className"></a>
+<p></p>
+<h2>className Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;className</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get className() : String</code>
+<br>
+<br> 
+ Returns the fully qualified class name.
+ <hr>
+<a name="name"></a>
+<p></p>
+<h2>name Property</h2>
+<p></p>
+<code>public var <b>name</b></code><code>:String</code>
+<br>
+<br>
+<hr>
+<a name="testArrayList"></a>
+<p></p>
+<h2>testArrayList Property</h2>
+<p></p>
+<code>public var <b>testArrayList</b></code><code>:<a href="../utils/Collection.html">Collection</a></code>
+<br>
+<br>
+<br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>TestSuite Constructor<a name="TestSuite()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>TestSuite</b>(param:Object = null)</code>
+</p> 
+ The TestSuite constructor, provided with the test to be run.
+ <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>param</b>:Object</code> (default = <code>null</code>)<code></code> &mdash; test class to be run. Can be a <code>TestCase</code>, another <code>TestSuite</code>
+ or any class that implements the <code>Test</code> interface.
+ </td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Detail</b></font></td>
+</tr>
+</table>
+<a name="addTest()"></a>
+<p></p>
+<h2>addTest Method</h2>
+<p></p>
+<p>
+<code>public function <b>addTest</b>(test:<a href="../framework/Test.html">Test</a>) : void</code>
+</p> 
+ Adds a test to this test suite.
+ <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>test</b>:<a href="../framework/Test.html">Test</a></code> &mdash; <code>Test</code> instance to be added.
+ </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="addTestSuite()"></a>
+<p></p>
+<h2>addTestSuite Method</h2>
+<p></p>
+<p>
+<code>public function <b>addTestSuite</b>(testClass:Class) : void</code>
+</p> 
+ Wraps a test inside a <code>TestSuite</code> and adds it to this test suite.
+ <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>testClass</b>:Class</code> &mdash; <code>Class</code> that extends TestCase which will be added as a test suite.
+ </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="countTestCases()"></a>
+<p></p>
+<h2>countTestCases Method</h2>
+<p></p>
+<p>
+<code>public function <b>countTestCases</b>() : Number</code>
+</p> 
+ Iterates all tests in this suite to calculate the total number of tests in this suite.
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; A Number containing the count of all tests in this suite.
+ </td>
+</tr>
+</table>
+<hr>
+<a name="getTestMethodNames()"></a>
+<p></p>
+<h2>getTestMethodNames Method</h2>
+<p></p>
+<p>
+<code>public function <b>getTestMethodNames</b>() : Array</code>
+</p>
+ Returns the names of the test methods for this test.
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash;  Array of method names for this test
+</td>
+</tr>
+</table>
+<hr>
+<a name="getTests()"></a>
+<p></p>
+<h2>getTests Method</h2>
+<p></p>
+<p>
+<code>public function <b>getTests</b>() : Array</code>
+</p>
+ Returns all the tests in this test suite as an <code>Array</code>
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code> &mdash; An <code>Array</code> containing the tests in this test suite.
+ </td>
+</tr>
+</table>
+<hr>
+<a name="runNext()"></a>
+<p></p>
+<h2>runNext Method</h2>
+<p></p>
+<p>
+<code>public function <b>runNext</b>(result:<a href="../framework/TestResult.html">TestResult</a>) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>result</b>:<a href="../framework/TestResult.html">TestResult</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="runWithResult()"></a>
+<p></p>
+<h2>runWithResult Method</h2>
+<p></p>
+<p>
+<code>public function <b>runWithResult</b>(result:<a href="../framework/TestResult.html">TestResult</a>) : void</code>
+</p> 
+ Runs the test, populating <code>result</code> with the test results.
+ <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>result</b>:<a href="../framework/TestResult.html">TestResult</a></code> &mdash; <code>TestResult</code> instance to be populated with the test results.
+ </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="testCount()"></a>
+<p></p>
+<h2>testCount Method</h2>
+<p></p>
+<p>
+<code>public function <b>testCount</b>() : Number</code>
+</p> 
+ The number of tests added to this suite.
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; A Number containing the number of tests added to this suite.
+ </td>
+</tr>
+</table>
+<hr>
+<a name="toString()"></a>
+<p></p>
+<h2>toString Method</h2>
+<p></p>
+<p>
+<code>public function <b>toString</b>() : String</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code></td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;| <a href="../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../index.html?flexunit/framework/TestSuite.html&amp;./flexunit/framework/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:55 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:55 PDT-->

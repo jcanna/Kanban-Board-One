@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="Collection,flexunit.utils.Collection,addItem,clear,contains,isEmpty,iterator,length,getItemAt,removeItem,toArray" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'Collection - FlexUnit - ActionScript 3.0 Unit Testing Framework';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">FlexUnit - ActionScript 3.0 Unit Testing Framework</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;| <a href="../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../index.html?flexunit/utils/Collection.html&amp;./flexunit/utils/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>flexunit.utils<h1>Interface Collection</h1>
+<p></p>
+<br>
+<a name="implementers"></a><b>All known implementing classes</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../utils/ArrayList.html">ArrayList</a></td>
+</tr>
+</table>
+<hr>
+<p></p>public interface <b>Collection</b>
+<p></p>
+<p></p>
+<hr>
+<br>
+<br>
+<a name="methodSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#addItem()"><b>addItem</b></a>(item:Object) : Boolean</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#clear()"><b>clear</b></a>() : void</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#contains()"><b>contains</b></a>(item:Object) : Boolean</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#getItemAt()"><b>getItemAt</b></a>(index:Number) : Object</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#isEmpty()"><b>isEmpty</b></a>() : Boolean</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#iterator()"><b>iterator</b></a>() : <a href="../utils/Iterator.html">Iterator</a></code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#length()"><b>length</b></a>() : Number</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#removeItem()"><b>removeItem</b></a>(item:Object) : Boolean</code></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#toArray()"><b>toArray</b></a>() : Array</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Detail</b></font></td>
+</tr>
+</table>
+<a name="addItem()"></a>
+<p></p>
+<h2>addItem Method</h2>
+<p></p>
+<p>
+<code>public function <b>addItem</b>(item:Object) : Boolean</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>item</b>:Object</code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+<hr>
+<a name="clear()"></a>
+<p></p>
+<h2>clear Method</h2>
+<p></p>
+<p>
+<code>public function <b>clear</b>() : void</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="contains()"></a>
+<p></p>
+<h2>contains Method</h2>
+<p></p>
+<p>
+<code>public function <b>contains</b>(item:Object) : Boolean</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>item</b>:Object</code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+<hr>
+<a name="getItemAt()"></a>
+<p></p>
+<h2>getItemAt Method</h2>
+<p></p>
+<p>
+<code>public function <b>getItemAt</b>(index:Number) : Object</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>index</b>:Number</code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code></td>
+</tr>
+</table>
+<hr>
+<a name="isEmpty()"></a>
+<p></p>
+<h2>isEmpty Method</h2>
+<p></p>
+<p>
+<code>public function <b>isEmpty</b>() : Boolean</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+<hr>
+<a name="iterator()"></a>
+<p></p>
+<h2>iterator Method</h2>
+<p></p>
+<p>
+<code>public function <b>iterator</b>() : <a href="../utils/Iterator.html">Iterator</a></code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../utils/Iterator.html">Iterator</a></code></td>
+</tr>
+</table>
+<hr>
+<a name="length()"></a>
+<p></p>
+<h2>length Method</h2>
+<p></p>
+<p>
+<code>public function <b>length</b>() : Number</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
+</tr>
+</table>
+<hr>
+<a name="removeItem()"></a>
+<p></p>
+<h2>removeItem Method</h2>
+<p></p>
+<p>
+<code>public function <b>removeItem</b>(item:Object) : Boolean</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>item</b>:Object</code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+<hr>
+<a name="toArray()"></a>
+<p></p>
+<h2>toArray Method</h2>
+<p></p>
+<p>
+<code>public function <b>toArray</b>() : Array</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code></td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;| <a href="../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../index.html?flexunit/utils/Collection.html&amp;./flexunit/utils/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:55 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:55 PDT-->

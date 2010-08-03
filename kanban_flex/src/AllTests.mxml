@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application 
+    xmlns:mx="http://www.adobe.com/2006/mxml"
+    xmlns:flexunit="flexunit.flexui.*" 
+    creationComplete="onCreationComplete()"
+>    
+    <mx:Script>
+        <![CDATA[
+        	import tests.TC_ModelLocatorMethods;
+        	import tests.TC_SaveCardCommand;
+        	import tests.TC_FlexIntrospectionHelper;
+        	import tests.TC_StringHelper;
+        	import tests.TC_RESTfulActiveRecord;
+        	import flexunit.framework.Test;
+        	import flexunit.framework.TestSuite;
+                        
+            private function onCreationComplete():void
+            {
+            	var allTests:TestSuite = new TestSuite();
+            	
+            	allTests.addTestSuite( TC_RESTfulActiveRecord );
+            	allTests.addTestSuite( TC_StringHelper );
+            	allTests.addTestSuite( TC_FlexIntrospectionHelper );
+            	allTests.addTestSuite( TC_SaveCardCommand );
+            	allTests.addTestSuite( TC_ModelLocatorMethods );
+
+            	
+                testRunner.test = allTests              
+                testRunner.startTest();
+            }
+            
+        ]]>
+    </mx:Script>    
+    <flexunit:TestRunnerBase id="testRunner" width="100%" height="100%" />
+</mx:Application>

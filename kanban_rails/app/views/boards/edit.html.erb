@@ -1,0 +1,12 @@
+<h1>Editing board</h1>
+
+<% form_for(@board) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @board %> |
+<%= link_to 'Back', boards_path %>

@@ -1,0 +1,82 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ col_one_position_one:
+   id: 1
+   name: col_one_position_one
+   position: 1
+   column_id: 901
+   type_id: 901
+   user_id: 901
+   date_in_column: <%= (Time.now - 21*(60*60*24)).to_s(:db) %>
+ 
+ col_one_position_two:
+   id: 2
+   name: col_one_position_two
+   position: 2
+   column_id: 901
+   type_id: 901
+   user_id: 901
+   date_in_column: <%= (Time.now - 14*(60*60*24)).to_s(:db) %>
+ 
+ col_one_position_three:
+   id: 3
+   name: col_one_position_three
+   position: 3
+   column_id: 901
+   type_id: 902
+   user_id: 902
+   
+ col_one_position_four:
+   id: 4
+   name: col_one_position_four
+   position: 4
+   column_id: 901
+   type_id: 902
+   user_id: 902
+   
+ col_two_position_one:
+   id: 5
+   name: col_two_position_one
+   position: 1
+   column_id: 902
+   type_id: 902
+   user_id: 903
+ 
+ col_two_position_two:
+   id: 6
+   name: col_two_position_two
+   position: 2
+   column_id: 902
+   type_id: 901
+   user_id: 902
+ 
+ col_two_position_three:
+   id: 7
+   name: col_two_position_three
+   position: 3
+   column_id: 902
+   type_id: 902
+   user_id: 903
+   
+ col_two_position_four:
+   id: 8
+   name: col_two_position_four
+   position: 4
+   column_id: 902
+   
+ col_three_position_one:
+   id: 9
+   name: col_three_position_one
+   position: 1
+   column_id: 903
+
+ col_three_position_two:
+   id: 10
+   name: col_three_position_two
+   position: 2
+   column_id: 903
+   type_id: 901
+   user_id: 902
+   parent_id: 4
+ 
+      

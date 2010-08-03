@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="horizontal">
+    <mx:Script>
+	<![CDATA[
+		import mx.collections.ArrayCollection;
+		import model.ModelLocator;
+		[Bindable]
+		public var innerModel:ModelLocator = ModelLocator.getInstance();
+
+    	]]>
+    </mx:Script>	
+
+	<mx:Repeater id='types' dataProvider="{innerModel.currentBoardTypes}">
+		<mx:Canvas backgroundColor="{types.currentItem.hex_color}">
+			<mx:Label text="{types.currentItem.name}" color="0x000000" fontWeight="bold" />
+		</mx:Canvas>
+	</mx:Repeater>
+
+</mx:Module>

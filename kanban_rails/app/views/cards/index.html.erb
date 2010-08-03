@@ -1,0 +1,18 @@
+<h1>Listing cards</h1>
+
+<table>
+  <tr>
+  </tr>
+
+<% for cards in @cards %>
+  <tr>
+    <td><%= link_to 'Show', cards %></td>
+    <td><%= link_to 'Edit', edit_cards_path(cards) %></td>
+    <td><%= link_to 'Destroy', cards, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New cards', new_cards_path %>

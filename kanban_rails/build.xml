@@ -1,0 +1,7 @@
+<project name="Kanban" default="warble" basedir="C:\Documents and Settings\pyp88231\My Documents\Flex Builder 3\kanban">
+	<target name="warble">
+		<exec executable="C:\Program Files\Adobe\Flex Builder 3\plugins\org.jruby_1.1.0.5965_RC2p2\bin\jruby.bat">
+<arg value="C:\Program Files\Adobe\Flex Builder 3\plugins\org.jruby_1.1.0.5965_RC2p2\lib\ruby\gems\1.8\gems\warbler-0.9.10\bin\warble"/>
+		</exec>
+	</target>
+</project>

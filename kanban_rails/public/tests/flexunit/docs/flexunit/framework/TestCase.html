@@ -1,0 +1,554 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="TestCase,flexunit.framework.TestCase,methodName,className,run,runWithResult,runStart,runMiddle,runFinish,setUp,tearDown,countTestCases,toString,addAsync,hasAsync,startAsync,getNextAsync,setTestResult,getTestMethodNames" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'TestCase - FlexUnit - ActionScript 3.0 Unit Testing Framework';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">FlexUnit - ActionScript 3.0 Unit Testing Framework</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;| <a href="../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../index.html?flexunit/framework/TestCase.html&amp;./flexunit/framework/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>flexunit.framework<h1>Class TestCase</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><a href="../framework/Assert.html">flexunit.framework.Assert</a><script type="text/javascript">document.writeln();</script><script type="text/javascript">var showInheritance = true;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("flexunit.framework.TestCase");</script>
+</pre>
+<br>
+<a name="implements"></a><b>All implemented interfaces</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../framework/Test.html">Test</a></td>
+</tr>
+</table>
+<a name="subclasses"></a><b>Direct known subclasses</b>
+<table>
+<tr>
+<td width="25px"></td><td><a href="../framework/WarningTestCase.html">WarningTestCase</a></td>
+</tr>
+</table>
+<hr>
+<p></p>public class <b>TestCase</b>
+<br>extends <a href="../framework/Assert.html">Assert</a>
+<p></p>
+ The Base Class for test cases. A Test case defines the fixture in which to run multiple tests. 
+ <p></p>
+<p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td>flexunit.flexui.TestRunner, <a href="Assert.html" target="">Assert</a>, <a href="TestSuite.html" target="">TestSuite</a>, <a href="TestResult.html" target="">TestResult</a></td>
+</tr>
+</table>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#className"><b>className</b></a>:String</code>&nbsp;&nbsp;[read-only]<br> 
+ Returns the the fully qualified class name
+ </td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#methodName"><b>methodName</b></a>:String</code>
+<br> 
+ The method name of the individual test to be run
+ </td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#TestCase()"><b>TestCase</b></a>(methodName:String = null)</code>
+<br> 
+ The TestCase constructor.</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#addAsync()"><b>addAsync</b></a>(func:Function, timeout:int, passThroughData:Object = null, failFunc:Function = null) : Function</code>
+<br>
+ Add an asynchronous check point to the test.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#countTestCases()"><b>countTestCases</b></a>() : Number</code>
+<br>
+ The number of test cases in this test class.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#getNextAsync()"><b>getNextAsync</b></a>() : Object</code>
+<br>
+ The AsyncTestHelper will call this when it's ready for to start the next async.</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#getTestMethodNames()"><b>getTestMethodNames</b></a>() : Array</code></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#hasAsync()"><b>hasAsync</b></a>() : Boolean</code>
+<br>
+ Returns true if there are any asynchronous methods remaining to be called
+ </td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#run()"><b>run</b></a>() : <a href="../framework/TestResult.html">TestResult</a></code>
+<br>
+ Creates a new <code>TestResult</code> and runs the tests, populating that <code>TestResult</code>
+ with the results.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#runFinish()"><b>runFinish</b></a>() : void</code>
+<br>
+ Runs <code>tearDown()</code>
+ </td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#runMiddle()"><b>runMiddle</b></a>() : void</code>
+<br>
+ Runs the normal test method or the next asynchronous method
+ </td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#runStart()"><b>runStart</b></a>() : void</code>
+<br>
+ Runs <code>setUp()</code>
+ </td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#runWithResult()"><b>runWithResult</b></a>(result:<a href="../framework/TestResult.html">TestResult</a>) : void</code>
+<br>
+ Runs the tests, populating the <code>result</code> parameter.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#setTestResult()"><b>setTestResult</b></a>(result:<a href="../framework/TestResult.html">TestResult</a>) : void</code>
+<br>
+ Called by the TestResult to pass along so that it can be passed for async
+ </td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#setUp()"><b>setUp</b></a>() : void</code>
+<br> 
+ Empty implementation of <code>setUp()</code>.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#startAsync()"><b>startAsync</b></a>() : void</code>
+<br>
+ Called by the TestResult to kick off wait for the next asynchronous method
+ </td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#tearDown()"><b>tearDown</b></a>() : void</code>
+<br> 
+ Empty implementation of <code>tearDown()</code>.</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#toString()"><b>toString</b></a>() : String</code>
+<br> 
+ A string representation of the test case
+ </td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="className"></a>
+<p></p>
+<h2>className Property</h2>
+<p></p>
+<b>Usage</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;className</code><code>:String</code>
+<br>
+<br>
+<b>Implementation</b>
+<br>
+<code>&nbsp;&nbsp;&nbsp;&nbsp;public function get className() : String</code>
+<br>
+<br> 
+ Returns the the fully qualified class name
+ <hr>
+<a name="methodName"></a>
+<p></p>
+<h2>methodName Property</h2>
+<p></p>
+<code>public var <b>methodName</b></code><code>:String</code>
+<br>
+<br> 
+ The method name of the individual test to be run
+ <br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>TestCase Constructor<a name="TestCase()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>TestCase</b>(methodName:String = null)</code>
+</p> 
+ The TestCase constructor. If you provide a contstructor in a <code>TestCase</code> subclass,
+ you should ensure that this constructor is called.
+ <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>methodName</b>:String</code> (default = <code>null</code>)<code></code> &mdash; name of the test method to be called in the test run.
+ </td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Detail</b></font></td>
+</tr>
+</table>
+<a name="addAsync()"></a>
+<p></p>
+<h2>addAsync Method</h2>
+<p></p>
+<p>
+<code>public function <b>addAsync</b>(func:Function, timeout:int, passThroughData:Object = null, failFunc:Function = null) : Function</code>
+</p>
+ Add an asynchronous check point to the test.
+ This method will return an event handler function.
+  <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>func</b>:Function</code> &mdash; the Function to execute when things have been handled
+ </td>
+</tr>
+<tr>
+<td class="paramSpacer"></td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><b>timeout</b>:int</code> &mdash; if the function isn't called within this time the test is considered a failure
+ </td>
+</tr>
+<tr>
+<td class="paramSpacer"></td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><b>passThroughData</b>:Object</code> (default = <code>null</code>)<code></code> &mdash; data that will be passed to your function (only if non-null) as the 2nd argument
+ </td>
+</tr>
+<tr>
+<td class="paramSpacer"></td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><b>failFunc</b>:Function</code> (default = <code>null</code>)<code></code> &mdash; a Function that will be called if the asynchronous function fails to execute, useful if perhaps the failure to
+     execute was intentional or if you want a specific failure message
+ </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Function</code> &mdash; the Function that can be used as an event listener
+ </td>
+</tr>
+</table>
+<hr>
+<a name="countTestCases()"></a>
+<p></p>
+<h2>countTestCases Method</h2>
+<p></p>
+<p>
+<code>public function <b>countTestCases</b>() : Number</code>
+</p>
+ The number of test cases in this test class.
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code> &mdash; A Number representation the count of test cases in this test class. Always returns 1 for <code>TestCase</code>
+ </td>
+</tr>
+</table>
+<hr>
+<a name="getNextAsync()"></a>
+<p></p>
+<h2>getNextAsync Method</h2>
+<p></p>
+<p>
+<code>public function <b>getNextAsync</b>() : Object</code>
+</p>
+ The AsyncTestHelper will call this when it's ready for to start the next async.  It's possible that
+ it will need to get access to it even before async has been started if the call didn't actually end
+ up being asynchronous.
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Object</code></td>
+</tr>
+</table>
+<hr>
+<a name="getTestMethodNames()"></a>
+<p></p>
+<h2>getTestMethodNames Method</h2>
+<p></p>
+<p>
+<code>public function <b>getTestMethodNames</b>() : Array</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Array</code></td>
+</tr>
+</table>
+<hr>
+<a name="hasAsync()"></a>
+<p></p>
+<h2>hasAsync Method</h2>
+<p></p>
+<p>
+<code>public function <b>hasAsync</b>() : Boolean</code>
+</p>
+ Returns true if there are any asynchronous methods remaining to be called
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+<hr>
+<a name="run()"></a>
+<p></p>
+<h2>run Method</h2>
+<p></p>
+<p>
+<code>public function <b>run</b>() : <a href="../framework/TestResult.html">TestResult</a></code>
+</p>
+ Creates a new <code>TestResult</code> and runs the tests, populating that <code>TestResult</code>
+ with the results.
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../framework/TestResult.html">TestResult</a></code></td>
+</tr>
+</table>
+<hr>
+<a name="runFinish()"></a>
+<p></p>
+<h2>runFinish Method</h2>
+<p></p>
+<p>
+<code>public function <b>runFinish</b>() : void</code>
+</p>
+ Runs <code>tearDown()</code>
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="runMiddle()"></a>
+<p></p>
+<h2>runMiddle Method</h2>
+<p></p>
+<p>
+<code>public function <b>runMiddle</b>() : void</code>
+</p>
+ Runs the normal test method or the next asynchronous method
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="runStart()"></a>
+<p></p>
+<h2>runStart Method</h2>
+<p></p>
+<p>
+<code>public function <b>runStart</b>() : void</code>
+</p>
+ Runs <code>setUp()</code>
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="runWithResult()"></a>
+<p></p>
+<h2>runWithResult Method</h2>
+<p></p>
+<p>
+<code>public function <b>runWithResult</b>(result:<a href="../framework/TestResult.html">TestResult</a>) : void</code>
+</p>
+ Runs the tests, populating the <code>result</code> parameter.
+ <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>result</b>:<a href="../framework/TestResult.html">TestResult</a></code> &mdash; TestResult instance to be populated
+ </td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="setTestResult()"></a>
+<p></p>
+<h2>setTestResult Method</h2>
+<p></p>
+<p>
+<code>public function <b>setTestResult</b>(result:<a href="../framework/TestResult.html">TestResult</a>) : void</code>
+</p>
+ Called by the TestResult to pass along so that it can be passed for async
+ <p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>result</b>:<a href="../framework/TestResult.html">TestResult</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="setUp()"></a>
+<p></p>
+<h2>setUp Method</h2>
+<p></p>
+<p>
+<code>public function <b>setUp</b>() : void</code>
+</p> 
+ Empty implementation of <code>setUp()</code>. Can be overridden in test class.
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="startAsync()"></a>
+<p></p>
+<h2>startAsync Method</h2>
+<p></p>
+<p>
+<code>public function <b>startAsync</b>() : void</code>
+</p>
+ Called by the TestResult to kick off wait for the next asynchronous method
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="tearDown()"></a>
+<p></p>
+<h2>tearDown Method</h2>
+<p></p>
+<p>
+<code>public function <b>tearDown</b>() : void</code>
+</p> 
+ Empty implementation of <code>tearDown()</code>. Can be overridden in test class.
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="toString()"></a>
+<p></p>
+<h2>toString Method</h2>
+<p></p>
+<p>
+<code>public function <b>toString</b>() : String</code>
+</p> 
+ A string representation of the test case
+ <p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>String</code> &mdash; A string representation of the test class name and the test method name.
+ </td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;| <a href="../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../index.html?flexunit/framework/TestCase.html&amp;./flexunit/framework/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:55 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:55 PDT-->

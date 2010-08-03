@@ -1,0 +1,26 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ type_one:
+   id: 901
+   name: type_one
+   board_id: 901
+   hex_color: "0x99ffff"
+
+ type_two:
+   id: 902
+   name: type_two
+   board_id: 901
+   hex_color: "0x993333"
+
+ type_three:
+   id: 903
+   name: type_three
+   board_id: 901
+   hex_color: "0xcccccc"
+
+ type_four:
+   id: 904
+   name: type_four
+   board_id: 901
+   hex_color: "0x339933"
+ 

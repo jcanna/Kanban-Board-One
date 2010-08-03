@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml"
+		   xmlns:views="views.*"
+		    layout="absolute"
+		     width="676" height="100%">
+
+   <mx:Script>
+      <![CDATA[
+      	import models.User;
+      	import helpers.UrlHelper;
+      	import helpers.StringHelper;
+      	import views.CardDetail;
+      	import mx.binding.utils.ChangeWatcher;
+      	import mx.events.PropertyChangeEvent;
+      	import model.ModelLocator;
+
+		[Bindable]
+		var __model:ModelLocator = ModelLocator.getInstance();
+		[Bindable]
+       	public var parentName:String = new String("No Parent");
+		[Bindable]
+       	public var ownerName:String = new String("No Owner");
+	
+		private var cardParentActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+		 	ModelLocator.getInstance(), ["currentCardDetailParent"], setCardParent );
+		private function setCardParent( pce:PropertyChangeEvent ):void
+		{
+			if (pce.newValue != null)
+				parentName = pce.newValue.name;
+		}
+
+		private var cardOwnerActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+		 	ModelLocator.getInstance(), ["currentCardDetailOwnerIndex"], setCardOwner );
+		private function setCardOwner( pce:PropertyChangeEvent ):void
+		{
+			if (pce.newValue != null && pce.newValue != -1)
+				ownerName = StringHelper.fullName( __model.users[pce.newValue as uint] );
+		}
+		private function emailOwner():void {
+			UrlHelper.emailUser( __model.users[__model.currentCardDetailOwnerIndex] );
+		}
+        
+        private function rteInit():void {
+            // remove a few controls
+			rte.textArea.editable=false;
+			rte.toolbar.removeAllChildren();
+        }
+
+	
+   ]]>
+   </mx:Script>
+   
+	<mx:Fade id="fadeOut" alphaFrom="1.0" alphaTo="0.0"/>
+	<mx:Fade id="fadeIn"  alphaFrom="0.0" alphaTo="1.0"/>
+  	<mx:VBox width="676" height="100%" 
+  			verticalGap="6" horizontalGap="6">
+  	    <mx:Panel title="Name" horizontalAlign="center" 
+  	    		doubleClickEnabled="true" doubleClick="{__model.cardDetailViewStackIndex = CardDetail.EDIT_VIEW;}"
+  	  			width="100%" height="5%" backgroundColor="#FBFE20" >
+	  	  	<mx:Text text="{__model.currentCardDetails.name}" 
+	  	  			doubleClickEnabled="true" doubleClick="{__model.cardDetailViewStackIndex = CardDetail.EDIT_VIEW;}"  
+	  	  			fontSize="14" fontWeight="bold" width="666" height="100%"  />	
+	    </mx:Panel>
+	    <mx:HBox width="100%" backgroundColor="{__model.currentCardDetailType.hex_color == null ? 0xFFFFFF : __model.currentCardDetailType.hex_color}">
+			<mx:Spacer width="3" />
+		      <mx:Label fontWeight="bold" text="Parent: {parentName}" width="400" />
+		      <mx:ComboBox id="viewTagText" width="100%" fontSize="10" textAlign="right" 
+					dataProvider="{__model.currentCardDetails.tags}" labelField="name"
+					prompt="View Current Tags" selectedIndex="-1" change="{ this.viewTagText.selectedIndex = -1; }"   />
+
+			<mx:Spacer width="3" />
+	    </mx:HBox>
+	    <mx:HBox width="100%" backgroundColor="{__model.currentCardDetailType.hex_color == null ? 0xFFFFFF : __model.currentCardDetailType.hex_color}">
+			<mx:Spacer width="3" />
+		      <mx:Label fontWeight="bold" text="Card Owner: {ownerName}" width="300" />
+			<mx:Spacer width="3" />
+	    </mx:HBox>
+	  	<mx:Canvas id="cardHierarchyCanvas" label="Card Hierarchy View" horizontalScrollPolicy="off" 
+	  			   backgroundColor="{__model.currentCardDetailType.hex_color == null ? 0xFFFFFF : __model.currentCardDetailType.hex_color}"
+	  			   width="100%" showEffect="{fadeIn}" hideEffect="{fadeOut}" >
+			<views:CardHierarchyView id="cardHierarchyView"
+				includeInLayout="{__model.showCardDetailHierarchy}" visible="{__model.showCardDetailHierarchy}"
+				width="100%" height="300" />
+	  	</mx:Canvas>
+		<mx:RichTextEditor id="rte" creationComplete="rteInit()" title="Description"
+				htmlText="{__model.currentCardDetails.description}" width="100%" height="100%"
+				doubleClickEnabled="true" doubleClick="{__model.cardDetailViewStackIndex = CardDetail.EDIT_VIEW;}"
+				paddingLeft="5" paddingTop="5" paddingRight="5" />		
+  	</mx:VBox>	
+	
+</mx:Module>

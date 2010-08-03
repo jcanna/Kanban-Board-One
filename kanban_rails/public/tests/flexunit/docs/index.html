@@ -1,0 +1,41 @@
+<!--livedocs:no-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+    <title>Macromedia Flex 2 ActionScript and MXML Language Reference</title>
+    <link rel="stylesheet" href="style.css" type="text/css" />
+    <script language="javascript" type="text/javascript">
+        window.onload=function(){
+            var d=document.location.search;
+		var args=d.substring(d.lastIndexOf('?')+1,d.length);
+		var classFrameContent=args;
+		var classListFrameContent='';
+		if (args.indexOf('&') != -1) {
+			classFrameContent = args.substring(0,args.indexOf('&'));
+			classListFrameContent = args.substring(args.indexOf('&')+1,args.length);
+		}
+            if(classFrameContent!='')top.frames['classFrame'].document.location.href=classFrameContent;
+		if(classListFrameContent!='')top.frames['packageFrame'].frames['classListFrame'].document.location.href=classListFrameContent;
+        }
+    </script>
+</head>
+<frameset rows="75,*" cols="*" border="2" framespacing="1" bordercolor="#AAAAAA">
+    <frame src="title-bar.html" name="titlebar" marginheight="5" scrolling="no" />
+    <frameset cols="165,*" border="2" framespacing="1" bordercolor="#AAAAAA">
+        <frame src="package-frame.html" name="packageFrame" scrolling="no" />
+        <frame src="package-summary.html#pageTop" name="classFrame" scrolling="auto" />
+    </frameset>
+    <noframes>
+	<body>
+        <h2>Frame Alert</h2>
+        <p>
+        This document is designed to be viewed using the frames feature. If you see this message, you are using a non-frame-capable web client.
+        <br />
+        Link to <a href="package-summary.html#pageTop">Non-frame version.</a>
+        </p>
+        </body>
+    </noframes>
+</frameset>
+</html>
+<!-- Copyright &copy; 2005 Macromedia Inc. All rights reserved. -->

@@ -1,0 +1,22 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ tag_one_user_one:
+   user_id: 901
+   tag_id: 901
+
+ tag_one_user_two:
+   user_id: 902
+   tag_id: 901
+
+ tag_one_user_three:
+   user_id: 903
+   tag_id: 901
+
+ tag_two_user_one:
+   user_id: 901
+   tag_id: 902
+
+ tag_three_user_three:
+   user_id: 903
+   tag_id: 903
+   

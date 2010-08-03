@@ -1,0 +1,72 @@
+# MySQL.  Versions 4.1 and 5.0 are recommended.
+#
+# Install the MySQL driver:
+#   gem install mysql
+# On Mac OS X:
+#   sudo gem install mysql -- --with-mysql-dir=/usr/local/mysql
+# On Mac OS X Leopard:
+#   sudo env ARCHFLAGS="-arch i386" gem install mysql -- --with-mysql-config=/usr/local/mysql/bin/mysql_config
+#       This sets the ARCHFLAGS environment variable to your native architecture
+# On Windows:
+#   gem install mysql
+#       Choose the win32 build.
+#       Install MySQL and put its /bin directory on your path.
+#
+# And be sure to use new-style password hashing:
+#   http://dev.mysql.com/doc/refman/5.0/en/old-client.html
+  
+
+development:
+  adapter: mysql
+  encoding: utf8
+  database: kanban_development
+  username: kanban
+  password: kanban
+  host: localhost
+  
+production:
+  adapter: mysql
+  encoding: utf8
+  database: kanban_development
+  username: kanban
+  password: kanban
+  host: localhost
+ 
+test:
+  adapter: mysql
+  encoding: utf8
+  database: kanban_development
+  username: kanban
+  password: kanban
+  host: localhost
+   
+nightly:
+  adapter: oracle
+  database: USDEV581.WORLD
+  username: kanban
+  password: backgamm0n
+  
+preproduction:
+  adapter: oracle
+  database: USTST581.WORLD
+  username: KANBAN_APP
+  password: rzyn1ak
+
+migrate_test:
+  adapter: oracle
+  database: USTST581.WORLD
+  username: KANBAN
+  password: redp1llar
+  
+#production:
+#  adapter: oracle
+#  database: USPRD581.WORLD
+#  username: KANBAN_APP
+#  password: el3ctr1c
+
+# use this environment to run db:migrate  
+migrate_production:
+  adapter: oracle
+  database: USPRD581.WORLD
+  username: KANBAN
+  password: b1rthday

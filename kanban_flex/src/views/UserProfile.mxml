@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<panel:SuperPanelPlus 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:panel="extensions.*" 
+	xmlns:views="views.*"
+	width="624" height="472"
+	mouseEnabled="true"
+	title="User Profile"
+	showControls="true" 
+	styleColor="0x666666" 
+	selectedBorderAlpha=".95" 
+	unselectedBorderAlpha=".75" 
+	moveAlpha=".5" 
+	highlightAlpha1=".3" 
+	highlightAlpha2=".1" 
+	dragEnabled="true" 
+	resizeEnabled="true"
+	escapeCloseEnabled="true"
+	layout="vertical"
+	horizontalAlign="center"
+	closeClickEvent="PopUpManager.removePopUp(this)" 
+	x="63" y="28" backgroundColor="#ffffff" borderColor="#666666">
+
+<mx:Script>
+        <![CDATA[
+        	import business.events.SaveUserEvent;
+        	import business.events.DeleteUserTagsEvent;
+        	import business.events.AddUserTagToProfileEvent;
+        	import mx.collections.ArrayCollection;
+        	import business.events.DeleteUserBoardsEvent;
+        	import business.events.AddUserBoardToProfileEvent;
+        	import model.ModelLocator;
+        	import business.events.SaveColumnEvent;
+        	import mx.managers.PopUpManager;
+            import models.User;
+            import models.Board;
+            import models.Tag;
+            
+			[Bindable]
+			public var __model:ModelLocator = ModelLocator.getInstance();
+
+		//User Methods
+			private function saveUser():void
+			{
+				__model.user.show_type_legend = showBoardTypesCB.selected;
+				__model.user.show_search = showCardSearchCB.selected;
+				__model.user.show_filter_cards = showFilteredCardsCB.selected;
+				__model.user.first_name = firstName.text;
+				__model.user.last_name = lastName.text;
+				var eventToDispatch:SaveUserEvent = 
+					new SaveUserEvent(__model.user);
+				eventToDispatch.dispatch();				
+			}
+
+		//Board Methods            
+            private function addBoardToProfileHandler(event:Event) 
+            {
+				var eventToDispatch:AddUserBoardToProfileEvent = 
+					new AddUserBoardToProfileEvent(__model.user, boardChooser.selectedItem);
+				eventToDispatch.dispatch();
+				boardChooser.selectedIndex = -1;
+            }
+            private function removeBoards():void
+            {
+            	var boardsToDelete:ArrayCollection = new ArrayCollection();
+            	for (var x:uint=0; x < source.selectedItems.length; x++) {
+            		boardsToDelete.addItem( source.selectedItems[x] );
+            	}
+				var eventToDispatch:DeleteUserBoardsEvent = 
+					new DeleteUserBoardsEvent(__model.user, boardsToDelete);
+				eventToDispatch.dispatch();
+            }
+
+		//Tag Methods            
+            private function addTagToProfileHandler(event:Event) 
+            {
+				var eventToDispatch:AddUserTagToProfileEvent = 
+					new AddUserTagToProfileEvent(__model.user, tagChooser.selectedItem);
+				eventToDispatch.dispatch();
+				tagChooser.selectedIndex = -1;
+            }
+            
+            private function removeTags():void
+            {
+            	var tagsToDelete:ArrayCollection = new ArrayCollection();
+            	for (var x:uint=0; x < tagSource.selectedItems.length; x++) {
+            		tagsToDelete.addItem( tagSource.selectedItems[x] );
+            	}
+				var eventToDispatch:DeleteUserTagsEvent =  
+					new DeleteUserTagsEvent(__model.user, tagsToDelete);
+				eventToDispatch.dispatch();
+            }
+            
+        ]]>
+    </mx:Script>
+
+  <mx:VBox>
+	<mx:Spacer height="10" />
+	<mx:HBox horizontalGap="10" verticalGap="10" backgroundColor="#99FFFF" width="510">
+		<mx:VBox>
+			<mx:CheckBox label="Show Board Types Legend" id="showBoardTypesCB" 
+				width="210" selected="{__model.user.show_type_legend == 'true'}" />
+			<mx:CheckBox label="Show Card Search Feature" id="showCardSearchCB" 
+				width="210" selected="{__model.user.show_search == 'true'}" />
+			<mx:CheckBox label="Still Show Cards Not In Filter" id="showFilteredCardsCB" 
+				width="210" selected="{__model.user.show_filter_cards == 'true'}" />
+		</mx:VBox>
+	    <mx:VBox>
+			<mx:HBox>
+				<mx:Label text="First Name:"/>
+				<mx:TextInput id="firstName" text="{__model.user.first_name}" 
+					maxChars="40" width="193"/>
+			</mx:HBox>
+			<mx:HBox width="289">
+				<mx:Label text="Last Name:"/>
+				<mx:TextInput id="lastName" text="{__model.user.last_name}" 
+					maxChars="40" width="193"/>
+			</mx:HBox>
+			<mx:Button label="Save User Preferences" click="saveUser()"  width="269"/>
+		</mx:VBox>
+	</mx:HBox>
+	<mx:Spacer height="10" />
+	<mx:HBox horizontalGap="10" verticalGap="10">
+		<mx:VBox backgroundColor="#99FFFF">
+		    <mx:Spacer height="5" />
+		    <mx:Label text="Select Board to Add to Profile" fontSize="12" fontWeight="bold"/>
+		    <mx:ComboBox 
+		    	id="boardChooser" 
+		    	width="250" 
+		    	selectedIndex="-1" 
+		    	dataProvider="{__model.boards}"
+		    	labelField="name" 
+		    	prompt="Select a Board..."
+		    	change="addBoardToProfileHandler(event)"
+		    	/>
+		    <mx:Spacer height="10" />
+		    <mx:Label text="Boards Currently in Profile" fontSize="12" fontWeight="bold"/>
+	        <mx:List id="source" width="100%" 
+	        	dataProvider="{__model.userBoards}" labelField="name" 
+	        	height="120" allowMultipleSelection="true" />
+	        
+            <mx:Button id="removeBoardsButton" label="Remove Selected Boards From Profile" click="removeBoards()"  width="249"/>
+		    <mx:Spacer height="5" />
+		</mx:VBox>
+		<mx:VBox backgroundColor="#99FFFF">
+		    <mx:Spacer height="5" />
+		    <mx:Label text="Select Tag to Add to Profile" fontSize="12" fontWeight="bold"/>
+		    <mx:ComboBox 
+		    	id="tagChooser" 
+		    	width="250" 
+		    	selectedIndex="-1" 
+		    	dataProvider="{__model.tags}"
+		    	labelField="name" 
+		    	prompt="Select a Tag..."
+		    	change="addTagToProfileHandler(event)"
+		    	/>
+		    <mx:Spacer height="10" />
+		    <mx:Label text="Tags Currently in Profile" fontSize="12" fontWeight="bold"/>
+	        <mx:List id="tagSource" width="100%" 
+	        	dataProvider="{__model.user.tags}" labelField="name" 
+	        	height="120" allowMultipleSelection="true" />
+	        
+            <mx:Button id="removeTagsButton" label="Remove Selected Tags From Profile" click="removeTags()"  width="249"/>
+		    <mx:Spacer height="5" />
+		</mx:VBox>
+	        
+	</mx:HBox>
+  	
+  </mx:VBox>	
+  
+</panel:SuperPanelPlus>
+

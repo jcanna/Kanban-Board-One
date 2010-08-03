@@ -1,0 +1,39 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ column_one:
+   id: 901
+   name: column_one
+   board_id: 901
+   position: 1
+   card_limit: 6
+   created_at: <%= (Time.now - 100*(60*60*24)).to_s(:db) %>
+   updated_at: <%= (Time.now - 21*(60*60*24)).to_s(:db) %>
+   average_days_in_column: 99.056
+
+ column_two:
+   id: 902
+   name: column_two
+   board_id: 901
+   position: 2
+   card_limit: 4
+   created_at: <%= (Time.now - 100*(60*60*24)).to_s(:db) %>
+   updated_at: <%= Time.now.to_s(:db) %>
+   average_days_in_column: 2.06
+
+ column_three:
+   id: 903
+   name: column_three
+   board_id: 901
+   position: 3
+   card_limit: 6
+   created_at: <%= (Time.now - 100*(60*60*24)).to_s(:db) %>
+   updated_at: <%= Time.now.to_s(:db) %>
+
+ column_four:
+   id: 904
+   name: column_four
+   board_id: 901
+   position: 4
+   created_at: <%= (Time.now - 98*(60*60*24)).to_s(:db) %>
+   updated_at: <%= Time.now.to_s(:db) %>
+      

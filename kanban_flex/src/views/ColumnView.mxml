@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:views="views.*"
+	width="210" height="100%"
+	creationComplete="init()"
+	resize="drawLine()"
+	mouseEnabled="true"
+	>
+	<mx:Script>
+		<![CDATA[
+			import flash.sampler.getInvocationCount;
+			import mx.collections.IList;
+			import mx.collections.ICollectionView;
+			import mx.collections.ArrayCollection;
+			import mx.controls.Alert;
+			import mx.core.DragSource;
+        	import mx.managers.DragManager;
+			import mx.managers.PopUpManager;
+        	import mx.events.*;
+			import mx.binding.utils.ChangeWatcher;
+
+			import business.events.AddColumnEvent;
+			import business.events.DeleteColumnEvent;
+			import business.events.SaveCardEvent;
+			import business.events.SaveColumnEvent;
+
+			import model.ModelLocator;
+			import models.Card;
+			import models.Column;
+			
+			[Bindable]
+			public var column:Column;
+			[Bindable]
+			public var myContextMenu:ContextMenu = new ContextMenu();
+			[Bindable]
+			private var columnLimitColor:String;
+			[Bindable]
+			private var columnLimitToolTip:String;
+
+			private var activityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	this, ["column","cards","length"], checkColumnLimit );
+			
+			private function checkColumnLimit( e:Event ):void
+			{
+				if (column == null) return;
+				columnLimitColor = "0x1B5947";
+				columnLimitToolTip = "Column Card Limit";
+				if (column.cards.length == 0) {
+					columnLimitColor = "0xFFCCCC";
+					columnLimitToolTip = "No Cards!";
+				} else if (column.cards.length > column.card_limit) {
+					columnLimitColor = "0xCC0000";
+					columnLimitToolTip = "Too Many Cards!";
+				}
+			}
+			
+			private function init():void
+			{
+				myContextMenu.hideBuiltInItems();
+				var item:ContextMenuItem = new ContextMenuItem("Create Column");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, createColumnHandler);
+            	item = new ContextMenuItem("Edit Column");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, editColumnInfo);
+            	item = new ContextMenuItem("Delete Column");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, deleteColumnHandler);
+            	item = new ContextMenuItem("Turn Column Drag/Drop On/Off");
+            	item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, draggingColumnHandler);
+            	this.contextMenu = myContextMenu;
+            	
+            	this.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler);
+            	this.addEventListener(DragEvent.DRAG_ENTER, dragEnterHandler);
+            	this.addEventListener(DragEvent.DRAG_DROP, dragDropHandler);
+   			}
+
+			private function draggingColumnHandler(event:Event):void
+			{
+				ModelLocator.getInstance().isColumnDragable = !ModelLocator.getInstance().isColumnDragable;
+			}
+
+            private function mouseDownHandler(event:MouseEvent):void 
+            {
+	            if (event.target.document is ColumnView && ModelLocator.getInstance().isColumnDragable)
+	            {
+		            var dragInitiatorColumnView:ColumnView = event.target.document;
+		            var ds:DragSource = new DragSource();
+		            ds.addData(dragInitiatorColumnView.column, 'column');
+					DragManager.doDrag(dragInitiatorColumnView, ds, event);
+		    	}
+	        }
+
+	        private function dragEnterHandler(event:DragEvent):void
+	        {
+				if (event.currentTarget is ColumnView)
+				{
+	                var dropTarget:ColumnView = event.currentTarget;
+					if (event.dragSource.hasFormat('column'))
+		                if (event.dragSource.dataForFormat('column') == this)
+		                	return;
+	                DragManager.acceptDragDrop(dropTarget);
+		  		}
+	        }
+                
+	        private function dragDropHandler(event:DragEvent):void
+	        {
+				if (event.dragSource.hasFormat('card'))
+				{
+					ModelLocator.getInstance().statusMessages.addItemAt( "Moving Card... ",0 );
+		            var card:Card = event.dragSource.dataForFormat('card');
+					card.column_id = column.id;
+					card.position = column.cards.length + 1;
+		            var eventToDispatch:SaveCardEvent = new SaveCardEvent(card);
+		            eventToDispatch.dispatch();
+				}
+				if (event.dragSource.hasFormat('column'))
+				{
+		            var dataC:Column = event.dragSource.dataForFormat('column');
+					ModelLocator.getInstance().statusMessages.addItemAt( "Moving Column: '" + dataC.name + "'",0 );
+					dataC.position = column.position;
+		            var eventToDispatchC:SaveColumnEvent = new SaveColumnEvent(dataC);
+		            eventToDispatchC.dispatch();
+				}	
+	        }
+	        
+   			private function drawLine():void
+   			{
+   				this.graphics.clear();	
+            	this.graphics.lineStyle(1.0, 0x000033, 0.75);
+            	this.graphics.moveTo(208, 10);
+            	this.graphics.lineTo(208, this.height - 10);
+   			}
+			
+			private function deleteColumnHandler(event:ContextMenuEvent):void
+			{
+				if (column.cards.length > 0) {
+					Alert.show("Please move cards out of column before deleting.");
+				} else {
+					var eventToDispatch = new DeleteColumnEvent(column);
+					eventToDispatch.dispatch();
+				}	
+			}
+			
+			private function createColumnHandler(event:Event):void
+			{
+				// show pop-up create column UI
+				var editColumnView:EditColumnView = new EditColumnView();
+				var newColumnData = new Column();
+				newColumnData.id = -1;
+				newColumnData.name="<Enter new column name>";
+				newColumnData.board_id = column.board_id;
+				newColumnData.position = column.position;
+				newColumnData.policy = "";
+				newColumnData.card_limit = 1;
+				editColumnView.column = newColumnData;
+				PopUpManager.addPopUp(editColumnView, this, true);
+			}
+			
+			private function editColumnInfo(event:ContextMenuEvent):void
+			{
+				var editColumnView:EditColumnView = new EditColumnView();
+				editColumnView.column = column;
+				editColumnView.addEventListener("save", updateColumnHandler);
+				PopUpManager.addPopUp(editColumnView, this, false);
+			}
+			
+			private function updateColumnHandler(event:Event)
+			{
+				var eventToDispatch:SaveColumnEvent = new SaveColumnEvent(column);
+				eventToDispatch.dispatch();
+				PopUpManager.removePopUp(editColumnView);
+			}
+		]]>
+	</mx:Script>
+				
+	<mx:VBox horizontalAlign="center" height="100%" width="200">
+		<mx:Label text="{column.name}" fontSize="12" fontWeight="bold" 
+			width="195" truncateToFit="true" textAlign="center"
+			doubleClickEnabled="true" doubleClick="editColumnInfo(null)"
+			toolTip="{column.policy}" />
+		<mx:HBox horizontalAlign="center">
+			<mx:Label id="averageDaysInColumn" text='{column.average_days_in_column} days' 
+				 width="70" toolTip='Average Days In Column' fontSize="12"
+				 visible="{column.average_days_in_column > 0}" />
+			<mx:Spacer width="74"/>
+			<mx:Label id="columnLimit" text='({column.card_limit})' width="40"
+				 color='{columnLimitColor}' toolTip='{columnLimitToolTip}' 
+				 fontWeight="bold" fontSize="12" />
+		</mx:HBox>
+		<mx:Spacer height="10"/>
+		<mx:Repeater id='cards' dataProvider="{column.cards}">
+		   <views:SimpleCardView card="{cards.currentItem}" />
+		</mx:Repeater>
+		<views:NewCardPlaceholder column="{column}" />
+	</mx:VBox>
+	
+	
+</mx:Canvas>

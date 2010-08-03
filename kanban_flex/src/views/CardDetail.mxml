@@ -1,0 +1,208 @@
+<panel:SuperPanelPlus 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:panel="extensions.*" 
+	xmlns:views="views.*"
+	width="690" height="580"
+	creationComplete="init()"
+	mouseEnabled="true"
+	title="Card Details"
+	showControls="true" 
+	styleColor="0x999999" 
+	selectedBorderAlpha=".95" 
+	unselectedBorderAlpha=".75" 
+	moveAlpha=".5" 
+	highlightAlpha1=".3" 
+	highlightAlpha2=".1" 
+	dragEnabled="true" 
+	resizeEnabled="true"
+	escapeCloseEnabled="true"
+	closeClickEvent="closeMe(event)" 
+	x="63" y="28" backgroundColor="#999999" borderColor="#666666">
+
+		
+	<mx:Script>
+		<![CDATA[
+			import business.events.DeleteCardEvent;
+			import mx.events.CloseEvent;
+			import mx.controls.Alert;
+			import models.User;
+			import helpers.UrlHelper;
+			import business.events.LoadAllCardsEvent;
+			import mx.binding.utils.ChangeWatcher;
+			import mx.events.PropertyChangeEvent;
+			import mx.effects.Fade;
+			import mx.managers.PopUpManager;
+			import mx.containers.ViewStack;
+			import mx.collections.ArrayCollection;
+			import model.ModelLocator;
+			import models.Type;
+			
+			public static var VIEW_ONLY:int = 0;
+			public static var EDIT_VIEW:int = 1;
+			public static var MANAGE_BOARD_TYPES:int = 2;
+
+			[Bindable]
+			public var myContextMenu:ContextMenu = new ContextMenu();
+			[Bindable]
+           	public var __model:ModelLocator = ModelLocator.getInstance();
+
+			private function init():void
+			{
+				myContextMenu.hideBuiltInItems();
+				var item:ContextMenuItem = new ContextMenuItem("View Card");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, switchToViewCardMode);
+				item = new ContextMenuItem("Edit Card");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, switchToEditCardMode);
+				item = new ContextMenuItem("Delete Card");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, deleteHandler);
+				item = new ContextMenuItem("E-mail Card Owner");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, emailOwnerHandler);
+				item = new ContextMenuItem("Close");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, closeMe);
+				item = new ContextMenuItem("Show/Hide Card Hierarchy");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, switchToCardHierarchyMode);
+				item = new ContextMenuItem("Manage Board Card Types");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, switchToManageBoardTypesMode);
+				item = new ContextMenuItem("Refresh Parent Card List");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, refreshAllCardsList);
+				item = new ContextMenuItem("Copy Card URL to Clipboard");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, cardURLHandler);
+            	this.contextMenu = myContextMenu;
+   			}
+
+			private var cardDetailActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	this, ["__model","currentCardDetails"], setCardType );
+
+			private var cardParentActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	this, ["__model","currentCardDetails"], setParentName );
+
+			private var cardOwnerActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	this, ["__model","currentCardDetails"], setOwner );
+
+			private function setCardType( pce:PropertyChangeEvent ) {
+				for(var idx:uint = 0; idx < __model.currentBoardTypes.length; idx++)
+				{
+					if (pce.newValue != null && __model.currentBoardTypes[idx].id == pce.newValue.type_id)
+		            {
+		            	__model.currentCardDetailType = __model.currentBoardTypes[idx];
+		            	__model.currentCardDetailTypeIndex = idx;
+						return;
+		            }
+				}
+				__model.currentCardDetailType = new Type();
+				__model.currentCardDetailType.hex_color = "0xFFFFFF";
+			}
+			public function setParentName( pce:PropertyChangeEvent ):String {
+				if (__model.currentCardDetails == null) return;
+				for(var idx:uint = 0; idx < __model.allCards.length; idx++) {
+					if (__model.allCards[idx].id == __model.currentCardDetails.parent_id) {
+						__model.currentCardDetailParent = __model.allCards[idx];
+						__model.currentCardDetailParentIndex = idx;
+						return;
+					}
+				}
+			}
+			private function setOwner( pce:PropertyChangeEvent ) {
+				if (pce.newValue != null)
+				{
+					for(var idx:uint = 0; idx < __model.users.length; idx++)
+					{
+						if (__model.users[idx].id == pce.newValue.user_id)
+			            {
+			            	__model.currentCardDetailOwnerIndex = idx;
+							return;
+			            }
+					}
+				}
+				__model.currentCardDetailOwnerIndex = -1;
+			}
+			private function emailOwnerHandler(event:ContextMenuEvent):void	{
+				if (__model.currentCardDetailOwnerIndex == -1) {
+					Alert.show("This card's owner has not been selected.");
+				} else {
+					UrlHelper.emailUser( __model.users[__model.currentCardDetailOwnerIndex] );
+				}
+			}
+			public function closeMe(event:Event):void	{
+				PopUpManager.removePopUp(this)
+				__model.currentCardDetails = null;
+				__model.currentCardDetailParent = null;
+				__model.currentCardDetailParentIndex = -1;
+				__model.currentCardDetailType = null;
+				__model.currentCardDetailTypeIndex = -1;
+			}
+			private function switchToViewCardMode(event:Event):void	{
+				__model.cardDetailViewStackIndex = VIEW_ONLY;
+			}
+			private function switchToEditCardMode(event:Event):void	{
+				__model.cardDetailViewStackIndex = EDIT_VIEW;
+			}
+			private function switchToManageBoardTypesMode(event:Event):void	{
+				__model.cardDetailViewStackIndex = MANAGE_BOARD_TYPES;
+			}
+			private function switchToCardHierarchyMode(event:Event):void	{
+				__model.showCardDetailHierarchy = !__model.showCardDetailHierarchy; //invert visibility
+			}
+			private function refreshAllCardsList(event:Event):void {
+				var loadAllCardsEvent:LoadAllCardsEvent = new LoadAllCardsEvent();
+				loadAllCardsEvent.dispatch();
+			}
+			private function cardURLHandler(event:ContextMenuEvent):void
+			{
+				UrlHelper.cardUrlToClipboard(__model.currentCardDetails.id);
+			}
+			private function deleteHandler(event:ContextMenuEvent):void
+			{
+			     Alert.show("Do you really intend to delete this card?", "Delete Confirmation", (Alert.YES | Alert.NO), this, deleteAlertHandler);
+			}
+			private function deleteAlertHandler(event:CloseEvent):void
+			{
+				if (event.detail==Alert.YES)
+				{
+					__model.statusMessages.addItemAt( "Deleting Card....",0 );
+					var eventToDispatch:Event = 
+						new DeleteCardEvent(__model.currentCardDetails);
+					eventToDispatch.dispatch();
+					closeMe(event);
+				}
+			}
+
+		]]>
+	</mx:Script>
+	
+  <mx:Fade id="fadeOut" alphaFrom="1.0" alphaTo="0.0"/>
+  <mx:Fade id="fadeIn"  alphaFrom="0.0" alphaTo="1.0"/>
+  <mx:ViewStack id="cardDetailStack" borderStyle="solid" 
+  	selectedIndex="{__model.cardDetailViewStackIndex}"
+  	 height="100%" width="100%">
+  	<mx:Canvas id="cardViewCanvas" label="View" horizontalScrollPolicy="off" 
+  			   width="686" height="100%" doubleClickEnabled="true" 
+  			   showEffect="{fadeIn}" hideEffect="{fadeOut}" >
+  	   <views:CardDetailView id="cardDetailView" />
+  	</mx:Canvas>
+  	<mx:Canvas id="cardEditCanvas" label="Edit" 
+		  	   width="686" height="100%"
+		  	   showEffect="{fadeIn}" hideEffect="{fadeOut}">
+  	   <views:CardDetailEdit id="cardDetailEdit" />
+  	</mx:Canvas>
+  	<mx:Canvas id="cardBoardTypesCanvas" label="Manage Board Types" horizontalScrollPolicy="off" 
+  			   width="100%" height="100%"
+  			   showEffect="{fadeIn}" hideEffect="{fadeOut}" >
+		<views:BoardTypesView />
+  	</mx:Canvas>
+
+  </mx:ViewStack>
+	
+</panel:SuperPanelPlus>

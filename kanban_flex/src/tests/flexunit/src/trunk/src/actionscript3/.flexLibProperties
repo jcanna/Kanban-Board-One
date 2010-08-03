@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flexLibProperties version="1">
+  <includeClasses>
+    <classEntry path="flexunit.flexui.IFlexWriter"/>
+    <classEntry path="flexunit.flexui.TestRunner"/>
+    <classEntry path="flexunit.flexui.TestRunnerBase"/>
+    <classEntry path="flexunit.framework.Assert"/>
+    <classEntry path="flexunit.framework.AssertionFailedError"/>
+    <classEntry path="flexunit.framework.AsyncTestHelper"/>
+    <classEntry path="flexunit.framework.Protectable"/>
+    <classEntry path="flexunit.framework.ProtectedFinishTestCase"/>
+    <classEntry path="flexunit.framework.ProtectedMiddleTestCase"/>
+    <classEntry path="flexunit.framework.ProtectedStartTestCase"/>
+    <classEntry path="flexunit.framework.Reflective"/>
+    <classEntry path="flexunit.framework.Test"/>
+    <classEntry path="flexunit.framework.TestCase"/>
+    <classEntry path="flexunit.framework.TestFailure"/>
+    <classEntry path="flexunit.framework.TestListener"/>
+    <classEntry path="flexunit.framework.TestResult"/>
+    <classEntry path="flexunit.framework.TestSuite"/>
+    <classEntry path="flexunit.framework.TestSuiteTestListener"/>
+    <classEntry path="flexunit.framework.WarningTestCase"/>
+    <classEntry path="flexunit.runner.BaseTestRunner"/>
+    <classEntry path="flexunit.textui.ResultPrinter"/>
+    <classEntry path="flexunit.textui.TestRunner"/>
+    <classEntry path="flexunit.utils.ArrayList"/>
+    <classEntry path="flexunit.utils.Collection"/>
+    <classEntry path="flexunit.utils.CollectionIterator"/>
+    <classEntry path="flexunit.utils.Iterator"/>
+  </includeClasses>
+  <includeResources/>
+  <namespaceManifests/>
+</flexLibProperties>

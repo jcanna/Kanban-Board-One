@@ -1,0 +1,12 @@
+<h1>Editing card_history</h1>
+
+<% form_for(@card_history) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @card_history %> |
+<%= link_to 'Back', card_histories_path %>

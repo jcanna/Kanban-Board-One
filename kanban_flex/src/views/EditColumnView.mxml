@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<panel:SuperPanelPlus 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:panel="extensions.*" 
+	xmlns:views="views.*"
+	width="520" height="350"
+	mouseEnabled="true"
+	title="Column Updates"
+	showControls="true" 
+	styleColor="0x666666" 
+	selectedBorderAlpha=".95" 
+	unselectedBorderAlpha=".75" 
+	moveAlpha=".5" 
+	highlightAlpha1=".3" 
+	highlightAlpha2=".1" 
+	dragEnabled="true" 
+	resizeEnabled="true"
+	escapeCloseEnabled="true"
+	layout="vertical"
+	horizontalAlign="center"
+	closeClickEvent="PopUpManager.removePopUp(this)" 
+	x="63" y="28" backgroundColor="#ffffff" borderColor="#666666">
+
+<mx:Script>
+        <![CDATA[
+        	import model.ModelLocator;
+        	import business.events.SaveColumnEvent;
+        	import mx.managers.PopUpManager;
+            import models.Column;
+            
+            [Bindable]
+            public var column:Column;
+            
+            public function handleSave()
+            {
+            	ModelLocator.getInstance().statusMessages.addItemAt( "Saving Column...",0 );
+            	column.card_limit = columnCardLimit.value;
+            	column.name = columnTitleText.text;
+            	column.policy = columnPolicyText.text;
+            	var event = new SaveColumnEvent(column);
+            	event.dispatch();
+            	PopUpManager.removePopUp(this);
+            }
+            
+        ]]>
+    </mx:Script>
+
+  <mx:Form name="Edit Column" id="editColumn" width="450" 
+  	horizontalGap="8" verticalGap="6" defaultButton="{okButton}" >
+	<mx:FormItem label="Column Title" fontWeight="bold" required="true">
+		<mx:TextInput width="200" id="columnTitleText" text="{column.name}"/>	
+	</mx:FormItem>
+	<mx:FormItem label="Column Card Limit" fontWeight="bold">
+	    <mx:NumericStepper id="columnCardLimit"
+	    	maximum="99" minimum="0" value="{column.card_limit}" />
+	</mx:FormItem>
+	<mx:FormItem label="Column Policy Description" fontWeight="bold">
+		<mx:TextArea width="200" height="200" id="columnPolicyText" text="{column.policy}"/>
+	</mx:FormItem>
+	<mx:FormItem>
+		<mx:Button label="Save" id="okButton" click="handleSave()"/>
+	</mx:FormItem>
+  </mx:Form>
+  
+</panel:SuperPanelPlus>
+

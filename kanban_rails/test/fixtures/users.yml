@@ -1,0 +1,32 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ greg_frazer:
+   id: 901
+   mud_id: gaf16842
+   first_name: Greg
+   last_name: Frazer
+   show_search: 0
+   show_type_legend: 1
+   show_filter_cards: 1
+   tags: tag_one, tag_three
+   
+ jeff_canna:
+   id: 902
+   mud_id: jqc4315
+   first_name: Jeff
+   last_name: Canna
+   show_search: 1
+   show_type_legend: 0
+   show_filter_cards: 1
+   tags: tag_two
+
+ stacy_bartram:
+   id: 903
+   mud_id: bartrs00
+   first_name: Stacy
+   last_name: Bartram
+   show_search: 1
+   show_type_legend: 1
+   show_filter_cards: 0
+   tags: tag_three
+   

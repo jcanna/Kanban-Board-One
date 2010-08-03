@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:views="views.*"
+	layout="vertical"
+	horizontalAlign="left"
+	borderThickness="0"
+	backgroundColor="#FFFFFF"
+	creationComplete="initApp()">
+	<mx:Style source="assets/styles.css"/>
+	<router:FSController xmlns:router="business.*"/>
+	
+	<mx:Script>
+		<![CDATA[
+			import helpers.RefreshHelper;
+			import business.events.LoadBoardEvent;
+			import views.CardDetail;
+			import mx.controls.Alert;
+			import mx.managers.PopUpManager;
+			import models.Board;
+			import models.Column;
+			import models.Card;
+			import models.Tag;
+			import models.User;
+			import mx.collections.ArrayCollection;
+			import mx.containers.Canvas;
+	        import mx.events.BrowserChangeEvent;
+	        import mx.managers.IBrowserManager;
+	        import mx.managers.BrowserManager;
+	        import mx.utils.URLUtil;
+			import model.ModelLocator;
+			import business.events.GetCardDetailsEvent;
+			import business.events.LoadUserProfileEvent;
+			import mx.core.Application;
+
+			[Bindable]
+			private var __model:ModelLocator=ModelLocator.getInstance();
+
+	        public var browserManager:IBrowserManager;
+
+			private function initApp():void
+			{
+				parseFlashVars();
+				RefreshHelper.refreshEverything();
+			}
+
+			private var board_id:Object;
+	        private var card_id:Object;
+	        private var user_id:Object;
+	        private function parseFlashVars():void 
+	        {
+	        	try {
+	        		board_id = Application.application.parameters.board_id;
+	            	card_id = Application.application.parameters.card_id;
+	            	user_id = Application.application.parameters.user_id;
+		         }
+		         catch (ReferenceError) {
+		         	return;
+		         }
+				
+		      	if (board_id != null) callLater(loadBrowserBoard);
+		      	if (card_id != null) callLater(loadBrowserCard);
+		      	if (user_id != null) callLater(loadBrowserUser);
+	        }
+	        
+			private function loadBrowserBoard():void
+			{
+				if (board_id != 0) callLoadBoardEvent(board_id);
+			}
+			private function callLoadBoardEvent(boardId:int):void
+			{
+				__model.statusMessages.addItemAt( "Loading Board...",0 );
+				var eventToDispatch:LoadBoardEvent = new LoadBoardEvent(boardId);
+				eventToDispatch.dispatch();
+				__model.showTypeLegend = true;
+			}
+			
+			private function loadBrowserCard():void
+			{
+				if (card_id != 0)
+				{
+					var card:Card = new Card();
+					card.id = card_id;
+					var eventToDispatch:Event = new GetCardDetailsEvent(card);
+					eventToDispatch.dispatch();
+					PopUpManager.addPopUp(new CardDetail(), this, false);
+				}
+			}
+
+			private function loadBrowserUser():void
+			{
+				if (user_id != 0)
+				{
+					var eventToDispatch:Event = new LoadUserProfileEvent(user_id);
+					eventToDispatch.dispatch();
+				}
+			}
+			
+		]]>
+	</mx:Script>
+
+	<views:ApplicationHeader width="100%" />
+	
+	<mx:HBox height="6" width="100%" borderStyle="none" backgroundColor="#1687E7" paddingBottom="0" />
+
+	<mx:HBox id="typeLegend" visible="{__model.showTypeLegend}" 
+							includeInLayout="{__model.showTypeLegend}" >
+      <mx:Label text="Type Legend" /><mx:Spacer width="12" />
+  	  <views:BoardTypeLegend />
+    </mx:HBox>
+
+	<mx:HBox>
+		<mx:Repeater id='columns' dataProvider="{__model.currentBoard.columns}">
+			<views:ColumnView column="{columns.currentItem}" />
+		</mx:Repeater>
+	</mx:HBox>
+
+</mx:Application>

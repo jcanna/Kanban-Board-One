@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml"
+	 layout="vertical" xmlns:views="views.*">
+	
+   <mx:Script>
+      <![CDATA[
+      	import models.Card;
+      	import models.Column;
+      	import models.Board;
+      	import mx.collections.ArrayCollection;
+      	import helpers.StringHelper;
+		import business.events.AddCardTagEvent;
+		import business.events.ChangeBoardAndSaveCardEvent;
+		import business.events.DeleteCardEvent;
+		import business.events.DeleteCardTagEvent;
+		import business.events.GetCardDetailsEvent;
+		import business.events.LoadAllCardsEvent;
+		import business.events.SaveCardEvent;
+      	import views.CardDetail;
+      	import mx.binding.utils.ChangeWatcher;
+      	import mx.events.PropertyChangeEvent;
+      	import model.ModelLocator;
+      
+		[Bindable]
+		var __model:ModelLocator = ModelLocator.getInstance();
+
+		private function addTag() {
+			__model.statusMessages.addItem( "Adding Tag to Card... " );
+			var eventToDispatch:Event = 
+				new AddCardTagEvent(__model.currentCardDetails,addTagEntry.text);
+			eventToDispatch.dispatch();
+			addTagEntry.text = "";
+		}
+		private function removeTag() {
+			__model.statusMessages.addItem( "Removing Tag to Card... " );
+			var eventToDispatch:Event = 
+				new DeleteCardTagEvent(__model.currentCardDetails,removeTags.selectedItem);
+			eventToDispatch.dispatch();
+			removeTags.selectedIndex = -1;
+		}
+
+		private function updateCardType():void
+		{
+			__model.currentCardDetailType = cardTypeChooser.selectedItem;
+		}
+		
+		private var removeTagsVisibility:String = "true";
+
+        public function saveHandler(event:Event)
+        {
+			__model.statusMessages.addItemAt( "Saving Card...",0 );
+        	__model.currentCardDetails.name = cardNameText.text;
+        	__model.currentCardDetails.description = cardDescriptionText.htmlText;
+        	if (__model.currentBoardTypes.length > 0 && cardTypeChooser.selectedIndex != -1) {
+            	__model.currentCardDetails.type_id = cardTypeChooser.selectedItem.id;
+        	}
+        	if (cardParentChooser.selectedIndex != -1) {
+	        	__model.currentCardDetails.parent_id = cardParentChooser.selectedItem.id;
+        	}
+        	if (ownerChooser.selectedIndex > -1) {
+            	__model.currentCardDetails.user_id = 
+            		ownerChooser.selectedIndex == 0 ? null : ownerChooser.selectedItem.id;
+        	}
+        	if (cardBoardChooser.selectedIndex != __model.cardBoardSelected(__model.currentCardDetails, __model.allColumns)) {
+            	var event = new ChangeBoardAndSaveCardEvent(__model.currentCardDetails, cardBoardChooser.selectedItem);
+            	event.dispatch();
+        	} else {
+            	var event = new SaveCardEvent(__model.currentCardDetails);
+            	event.dispatch();
+        	}
+        	__model.cardDetailViewStackIndex = CardDetail.VIEW_ONLY;
+        	this.parent.parent.parent.closeMe(null);
+        }
+        private function cardDescriptionTextInit():void {
+            
+            // code to set up an event listener for underlining linked text.
+            cardDescriptionText.linkTextInput.addEventListener( FocusEvent.FOCUS_OUT, onLinkFocusOut );
+
+        }
+        private function onLinkFocusOut( e:FocusEvent ):void {
+            var html:String = cardDescriptionText.htmlText;
+            var blankU:RegExp = /TARGET="_blank"><U>/g;
+            html = html.replace( blankU, "><U>" );
+            // remove the TARGET="_blank" in the links and replace it with an <U>         
+            var removeBlank:RegExp = /TARGET="_blank">/g;
+            html = html.replace( removeBlank, "><U>" );
+            // close the underline
+            var closeUnderline:RegExp = /<\/A>/g;
+            html = html.replace( closeUnderline, "</U></A>" );
+            // make the RTE think that the underline button was pressed so that it will 
+            // apply the appropritate style to make the underline visible
+            var me:MouseEvent = new MouseEvent( MouseEvent.CLICK, false );
+            cardDescriptionText.underlineButton.dispatchEvent( me );
+            // now there are some double "</U></U>" so we need to replace them with </U>
+            var uu:RegExp = /<\/U><\/U>/g;
+            html = html.replace( uu, "</U>" );
+        }
+		private function toggleManageUsers():void {
+			manageUsers.includeInLayout = !manageUsers.includeInLayout;
+			manageUsers.visible = !manageUsers.visible;
+			cardDescriptionText.height = manageUsers.visible == false ? 416 : 271;
+			userButton.label = manageUsers.visible == false ? "Owner:" : "Hide";
+		}
+		private function fullName(item:Object):String {
+			return StringHelper.fullName( item );
+		}
+	
+   ]]>
+   </mx:Script>
+
+  	  <mx:VBox verticalGap="6" horizontalGap="6" 
+  	  			width="100%" height="100%" horizontalAlign="right">
+	  	  <mx:Panel title="Name (edit mode)" horizontalAlign="center" 
+	  	  			width="100%" height="5%" backgroundColor="#FBFE20" >
+			<mx:HBox width="100%" height="100%" horizontalAlign="right" backgroundColor="#FBFE20" >
+	          <mx:TextInput id="cardNameText" text="{__model.currentCardDetails.name}" 
+	          				fontSize="14" fontWeight="bold" width="604" backgroundColor="#FBFE20" />
+			  <mx:Button label="Save" id="okButton" click="saveHandler(event)"/>
+			</mx:HBox>
+	  	  </mx:Panel>
+	      <mx:HBox width="100%" >
+			<mx:Spacer width="3" />
+				<mx:ComboBox id="editTagText" width="100%" fontSize="10" textAlign="right" 
+					dataProvider="{__model.currentCardDetails.tags}" labelField="name"
+					prompt="View Current Tags" selectedIndex="-1" 
+					change="{ this.editTagText.selectedIndex = -1; }"   />
+		       <mx:TextInput id="addTagEntry"
+		       	textAlign="right" fontSize="10" />
+		       <mx:Button width="15" height="15" id="searchButton"
+		       	icon="@Embed(source='images/add.gif')" click="addTag()" />
+		       <mx:ComboBox id="removeTags" 
+		       	dataProvider="{__model.currentCardDetails.tags}" labelField="name"
+		       	visible="{removeTagsVisibility}"
+		       	fontSize="10" textAlign="right" 
+		       	prompt="Remove Tag" selectedIndex="-1" change="removeTag()" />
+			<mx:Spacer width="3" />
+	      </mx:HBox>
+		  <mx:HBox horizontalAlign="right">
+			<mx:Spacer width="3" />
+
+		  	  <mx:Label text="Board:" fontWeight="bold" />
+		  	  <mx:ComboBox id="cardBoardChooser"
+		    	width="200"
+		    	selectedIndex="{__model.cardBoardSelected(__model.currentCardDetails, __model.allColumns)}" 
+		    	dataProvider="{__model.boardListWithBlankOption(__model.boards)}"
+		    	labelField="name" 
+		    	/>
+		      <mx:HBox backgroundColor="{__model.currentCardDetailType.hex_color}">
+				<mx:Spacer width="5" />
+			  	  <mx:Label text="Type:" fontWeight="bold" />
+			  	  <mx:ComboBox id="cardTypeChooser"
+			    	width="120"
+			    	dataProvider="{__model.currentBoardTypes}"
+			    	selectedIndex="{__model.currentCardDetailTypeIndex}"
+			    	labelField="name" change="updateCardType()"
+			    	prompt="Choose a type..."
+			    	/>
+		      </mx:HBox>	
+			  <mx:LinkButton label="Owner:" toolTip="Click to manage users." textDecoration="underline" id="userButton" click="toggleManageUsers()"/>
+			  <mx:ComboBox id="ownerChooser"
+			    	width="150"
+			    	dataProvider="{__model.users}"
+			    	selectedIndex="{__model.currentCardDetailOwnerIndex}"
+			    	labelFunction="fullName"
+			    	prompt="Select an owner..."
+			    	/>
+			<mx:Spacer width="3" />
+		  </mx:HBox>
+		  <views:ManageUsers id="manageUsers" horizontalAlign="left" includeInLayout="false" visible="false" />
+		  <mx:HBox horizontalAlign="right">
+			<mx:Spacer width="3" />
+		  	  <mx:Label text="Parent:" fontWeight="bold" />
+		  	  <mx:ComboBox id="cardParentChooser"
+		    	width="608"
+		    	prompt="Choose a Parent for this card..."
+		    	dataProvider="{__model.allCards}"
+		    	selectedIndex="{__model.currentCardDetailParentIndex}"
+		    	labelField="name" />
+			<mx:Spacer width="3" />
+		  </mx:HBox>
+          <mx:RichTextEditor id="cardDescriptionText" title="Description (edit mode)" 
+ 			width="100%" height="416" styleName="myPanelTitle"
+ 			creationComplete="cardDescriptionTextInit()"
+           	htmlText="{__model.currentCardDetails.description}"/>
+  	  </mx:VBox>
+
+</mx:Module>

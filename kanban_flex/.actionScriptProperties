@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actionScriptProperties mainApplicationPath="KanbanC.mxml" version="3">
+<compiler additionalCompilerArguments="-locale en_US -includes models.Board models.Card models.Card_History models.Column models.Tag" copyDependentFiles="true" enableModuleDebug="true" generateAccessible="true" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersion="9.0.28" htmlPlayerVersionCheck="true" outputFolderLocation="DOCUMENTS/kanban_rails/public" outputFolderPath="bin-debug" sourceFolderPath="src" strict="false" useApolloConfig="false" verifyDigests="true" warn="false">
+<compilerSourcePath/>
+<libraryPath defaultLinkType="1">
+<libraryPathEntry kind="4" path=""/>
+<libraryPathEntry kind="1" linkType="1" path="libs"/>
+</libraryPath>
+<sourceAttachmentPath/>
+</compiler>
+<applications>
+<application path="AllTests.mxml"/>
+<application path="KanbanC.mxml"/>
+</applications>
+<modules>
+<module application="src/KanbanC.mxml" destPath="views/BoardTypesView.swf" optimize="true" sourcePath="src/views/BoardTypesView.mxml"/>
+<module application="src/KanbanC.mxml" destPath="views/BoardTypeLegend.swf" optimize="true" sourcePath="src/views/BoardTypeLegend.mxml"/>
+<module application="src/KanbanC.mxml" destPath="views/ManageUsers.swf" optimize="true" sourcePath="src/views/ManageUsers.mxml"/>
+</modules>
+<buildCSSFiles/>
+</actionScriptProperties>

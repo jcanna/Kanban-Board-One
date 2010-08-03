@@ -1,0 +1,18 @@
+<h1>Listing card_histories</h1>
+
+<table>
+  <tr>
+  </tr>
+
+<% for card_history in @card_histories %>
+  <tr>
+    <td><%= link_to 'Show', card_history %></td>
+    <td><%= link_to 'Edit', edit_card_history_path(card_history) %></td>
+    <td><%= link_to 'Destroy', card_history, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New card_history', new_card_history_path %>

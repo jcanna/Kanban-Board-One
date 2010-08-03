@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" 
+	alpha="0.2" 
+	rollOut="hide()" 
+	rollOver="show()" 
+	backgroundColor="#FBFE20" 
+	cornerRadius="5" 
+	borderStyle="solid" 
+	borderColor="#B7BABC"
+	click="clickHandler(event)"
+	>
+	<mx:Script>
+		<![CDATA[
+			import model.ModelLocator;
+			import models.Card;
+			import business.events.AddCardEvent;
+			import mx.controls.Alert;
+			import models.Column;
+		    
+		    [Bindable]
+		    public var column:Column;
+		    
+		    private function clickHandler(event:MouseEvent)
+		    {
+		    	if (event.target == cancelButton)
+		    	{
+		    		changeToNewCardMode();
+		    	}
+		    	else if (event.target == saveButton)
+		    	{
+		    		save();
+		    	}	
+		    	else if (event.target == this)
+		    	{
+		    		changeToEditingMode();
+		    	}
+		    }
+		    
+		    private function changeToEditingMode()
+		    {
+		    	viewStack.selectedIndex = 1;
+		    	nameEditField.setFocus();
+		    }
+		    
+		    private function changeToNewCardMode()
+		    {
+		    	nameEditField.text = "";
+		    	viewStack.selectedIndex = 0;
+		    }
+		    
+			private function hide()
+			{
+				alpha=0.2;
+				newCardPrompt.text = "";
+			}
+			
+			private function show()
+			{
+				alpha=1.0;
+				newCardPrompt.text = "Click here for a new card";
+			}
+			
+			private function save()
+			{
+				if (nameEditField.text != "")
+				{
+					ModelLocator.getInstance().statusMessages.addItemAt( "Adding Card...",0 );
+					var newCard:Card = new Card();
+					newCard.name = nameEditField.text;
+					newCard.column_id = column.id;
+					var eventToDispatch = new AddCardEvent( newCard );
+					eventToDispatch.dispatch();
+				}
+				changeToNewCardMode();
+			}
+		
+		]]>
+	</mx:Script>
+	
+	<mx:ViewStack id="viewStack" resizeToContent="true" creationPolicy="all" selectedIndex="0">
+	    <mx:VBox width="190" height="50">
+	    	<mx:Label x="15" y="15" id="newCardPrompt" alpha="1.0" color="black" text=""  />
+	    </mx:VBox>
+		<mx:VBox height="80" width="190">
+			<mx:TextArea  height="50" x="10" y="10" id="nameEditField" text="" />
+			<mx:HBox horizontalAlign="right">
+				<mx:Button id="cancelButton" label="Cancel" />
+				<mx:Button id="saveButton" label="Save" />
+			</mx:HBox>
+		</mx:VBox>	
+	</mx:ViewStack>
+	
+	
+</mx:Canvas>

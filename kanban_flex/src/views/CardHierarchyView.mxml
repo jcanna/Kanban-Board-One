@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml"
+	creationComplete="init()"
+	layout="vertical">
+
+   <mx:Script>
+      <![CDATA[
+      	import helpers.StringHelper;
+      	import mx.binding.utils.ChangeWatcher;
+      	import mx.collections.XMLListCollection;
+      	import mx.collections.ArrayCollection;
+        import flash.events.*;
+        import mx.events.*;
+        import mx.controls.*;
+		import mx.managers.PopUpManager;
+      	import models.Card;
+      	import model.ModelLocator;
+		import views.CardDetail;
+		import business.events.GetCardDetailsEvent;
+
+		[Bindable]
+		var __model:ModelLocator = ModelLocator.getInstance();
+		[Bindable]
+		var hierXML:XML = <HierarchyOfCards></HierarchyOfCards>
+
+		private var cardHierarchyActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+		 	ModelLocator.getInstance(), ["currentCardDetails"], grabbedCardDetail );
+
+		private var nodesDownToTarget:int = 0;
+		
+		private function init():void
+		{
+			if (__model.currentCardDetails != null && __model.currentCardDetails.id != null
+				&& hierXML.children().length() == 0)
+			{
+				assembleHierarchy( __model.currentCardDetails );
+			}
+		}
+
+		private function grabbedCardDetail(	pce:PropertyChangeEvent ):void
+		{
+			if (pce.newValue == null || pce.newValue.id == null || hierXML.children().length() != 0) return;
+			assembleHierarchy( pce.newValue );	
+		}	 
+		public function assembleHierarchy( card:Card ):void
+		{
+			var trailGoingUp:ArrayCollection = new ArrayCollection();
+			iterateUpwards(trailGoingUp,card);
+			this.nodesDownToTarget = trailGoingUp.length;
+			walkDownHierarchy(hierXML, trailGoingUp, trailGoingUp.length-1);
+
+			openTree();			
+		}
+		private function iterateUpwards(upArr:ArrayCollection, inputCard:Card):void
+		{
+			upArr.addItem(inputCard);
+			if (inputCard.parent_id != null)
+			{
+				for each (var card:Card in __model.allCards)
+				{
+					if (card.id == inputCard.parent_id)
+					{
+						iterateUpwards( upArr, card );
+						return;
+					}
+				}
+			}
+		}
+		private function walkDownHierarchy(incrXML:XML, trailGoingUp:ArrayCollection, idx:int):void
+		{
+			if (idx == -1) {
+				walkDownFromTarget(incrXML, __model.currentCardDetails.id);
+			} else { //walk down to target
+				var tmpLabel:String = StringHelper.cardWithColumnName( trailGoingUp[idx] );
+				var newNode:XML = <card label={tmpLabel} data={trailGoingUp[idx].id}/>
+				incrXML.appendChild( newNode );
+				walkDownHierarchy(newNode, trailGoingUp, --idx);
+			}
+		}
+		private function walkDownFromTarget(incrXML:XML, parentId:uint):void
+		{
+			for each (var card:Card in __model.allCards)
+			{
+				if (card.parent_id != null && parentId == card.parent_id)
+				{
+					var tmpLabel:String = StringHelper.cardWithColumnName( card );
+					var newNode:XML = <card label={tmpLabel} data={card.id}/>
+					incrXML.appendChild( newNode );
+					walkDownFromTarget( newNode, card.id );
+				}
+			}
+		}
+
+        private function openTree():void {
+            var nodeList:XMLListCollection = 
+                cardHierarchyTree.dataProvider as XMLListCollection;
+
+            var node:XMLList = nodeList.source;
+	    	cardHierarchyTree.expandItem(hierXML,true);  //expand the first node
+            var n:XML = node[0];
+            if( n.children() != null ) {
+                cardHierarchyTree.expandItem(n,true,false);
+                cardHierarchyTree.expandChildrenOf(n,true);
+            }
+            if( n != null ) cardHierarchyTree.selectedIndex = this.nodesDownToTarget;
+        }
+
+         private function changeEvt(event:Event):void {
+			var theData:String = "";
+            if (event.currentTarget.selectedItem.@data) {
+				theData = event.currentTarget.selectedItem.@data;
+            	var selectedCard:Card = new Card();
+            	selectedCard.id = new int(theData);
+	        	this.parent.parent.parent.parent.parent.parent.closeMe(null);
+				var cardDetail:CardDetail = new CardDetail();
+				var eventToDispatch:Event = new GetCardDetailsEvent(selectedCard);
+				eventToDispatch.dispatch();
+				PopUpManager.addPopUp(cardDetail, this, false);
+            }
+         }
+
+   ]]>
+   </mx:Script>
+
+    <mx:Tree id="cardHierarchyTree" 
+        horizontalCenter="0"
+        showRoot="false"
+		dataProvider="{hierXML}"
+        width="100%" height="100%"
+        change="changeEvt(event)"
+        backgroundColor="{__model.currentCardDetailType.hex_color == null ? 0xFFFFFF : __model.currentCardDetailType.hex_color}"
+        labelField="@label"/>    
+    	
+</mx:Module>

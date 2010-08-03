@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<panel:SuperPanelPlus 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:panel="extensions.*" 
+	xmlns:views="views.*"
+	width="700" height="550"
+	creationComplete="init()"
+	mouseEnabled="true"
+	title="Board Details"
+	showControls="true" 
+	styleColor="0x666666" 
+	selectedBorderAlpha=".95" 
+	unselectedBorderAlpha=".75" 
+	moveAlpha=".5" 
+	highlightAlpha1=".3" 
+	highlightAlpha2=".1" 
+	dragEnabled="true" 
+	resizeEnabled="true"
+	escapeCloseEnabled="true"
+	layout="vertical"
+	horizontalAlign="center" verticalAlign="middle"
+	closeClickEvent="PopUpManager.removePopUp(this)" 
+	x="63" y="28" backgroundColor="#ffffff" borderColor="#666666">
+    
+    <mx:Script>
+    	<![CDATA[
+    		import helpers.UrlHelper;
+    		import models.User;
+    		import helpers.StringHelper;
+    		import models.Type;
+    		import mx.managers.PopUpManager;
+    		import business.events.SaveBoardEvent;
+    		import model.ModelLocator;
+    		import models.Board;
+    		[Bindable]
+    		public var board:Board;
+    		[Bindable]
+    		public var __model:ModelLocator = ModelLocator.getInstance();
+			[Bindable]
+			public var myContextMenu:ContextMenu = new ContextMenu();
+
+			public static var EDIT_VIEW:int = 0;
+			public static var MANAGE_BOARD_TYPES:int = 1;
+
+			private function init()
+			{
+				myContextMenu.hideBuiltInItems();
+				var item:ContextMenuItem = new ContextMenuItem("Edit Board");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, switchToEditBoardMode);
+				item = new ContextMenuItem("Manage Board Types");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, switchToManageBoardTypesMode);
+				item = new ContextMenuItem("E-mail Board Owner");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, emailOwnerHandler);
+				item = new ContextMenuItem("Copy Board URL to Clipboard");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, boardUrlHandler);
+            	this.contextMenu = myContextMenu;
+			}	
+			private function switchToEditBoardMode(event:Event):void	{
+				__model.boardDetailViewStackIndex = EDIT_VIEW;
+			}
+			private function switchToManageBoardTypesMode(event:Event):void	{
+				__model.boardDetailViewStackIndex = MANAGE_BOARD_TYPES;
+			}
+			private function boardUrlHandler(event:Event):void
+			{
+				UrlHelper.boardUrlToClipboard();
+			}
+			private function emailOwnerHandler(event:ContextMenuEvent):void	{
+				if (board.user_id.length < 1) {
+					Alert.show("This board's owner has not been selected.");
+					return;
+				}
+				for each (var user:User in ModelLocator.getInstance().users) {
+					if (board.user_id == user.id) {
+						UrlHelper.emailUser( user );
+						return;
+					}
+				}
+			}
+    		public function handleSave()
+            {
+            	__model.statusMessages.addItemAt("Saving Board...",0);
+            	board.name = nameInput.text;
+            	if (ownerChooser.selectedIndex > -1)
+	            	board.user_id = ownerChooser.selectedIndex == 0 ? null : ownerChooser.selectedItem.id;
+            	if (slaLimit.value > 0)
+	            	board.sla = slaLimit.value;
+            	board.policy = boardPolicyText.htmlText;
+            	var event = new SaveBoardEvent(board);
+            	event.dispatch();
+            	PopUpManager.removePopUp(this);
+            }
+
+			private function ownerIndex():int {
+				for(var idx:uint = 0; idx < __model.users.length; idx++) {
+					if (__model.users[idx].id == board.user_id) {
+		            	return idx;
+		            }
+				}
+				return -1;
+			}
+
+	        private function boardPolicyTextInit():void {
+	            
+	            // code to set up an event listener for underlining linked text.
+	            boardPolicyText.linkTextInput.addEventListener( FocusEvent.FOCUS_OUT, onLinkFocusOut );
+	
+	        }
+	        private function onLinkFocusOut( e:FocusEvent ):void {
+	            var html:String = boardPolicyText.htmlText;
+	            var blankU:RegExp = /TARGET="_blank"><U>/g;
+	            html = html.replace( blankU, "><U>" );
+	            // remove the TARGET="_blank" in the links and replace it with an <U>         
+	            var removeBlank:RegExp = /TARGET="_blank">/g;
+	            html = html.replace( removeBlank, "><U>" );
+	            // close the underline
+	            var closeUnderline:RegExp = /<\/A>/g;
+	            html = html.replace( closeUnderline, "</U></A>" );
+	            // make the RTE think that the underline button was pressed so that it will 
+	            // apply the appropritate style to make the underline visible
+	            var me:MouseEvent = new MouseEvent( MouseEvent.CLICK, false );
+	            boardPolicyText.underlineButton.dispatchEvent( me );
+	            // now there are some double "</U></U>" so we need to replace them with </U>
+	            var uu:RegExp = /<\/U><\/U>/g;
+	            html = html.replace( uu, "</U>" );
+	        }
+			private function toggleManageUsers():void {
+				manageUsers.includeInLayout = !manageUsers.includeInLayout;
+				manageUsers.visible = !manageUsers.visible;
+				userButton.label = manageUsers.visible == false ? "Add/Delete User" : "Hide Users";
+			}
+			private function fullName(item:Object):String {
+				return StringHelper.fullName( item );
+			}
+
+    	]]>
+    </mx:Script>	
+    	
+  <mx:Fade id="fadeOut" alphaFrom="1.0" alphaTo="0.0"/>
+  <mx:Fade id="fadeIn"  alphaFrom="0.0" alphaTo="1.0"/>
+  <mx:ViewStack id="boardDetailStack" borderStyle="solid" borderThickness="20"
+  	selectedIndex="{__model.boardDetailViewStackIndex}"
+	height="100%" width="100%">
+  	<mx:Canvas id="boardEditCanvas" label="Edit" horizontalScrollPolicy="off" 
+  			   width="686" height="100%" doubleClickEnabled="true"
+  			   showEffect="{fadeIn}" hideEffect="{fadeOut}" >
+	  <mx:Form name="New Board" id="newBoardForm" width="650" height="100%" 
+	  		horizontalGap="8" verticalGap="6" defaultButton="{okButton}" >
+		<mx:FormItem label="Name" fontWeight="bold" required="true">
+		  <mx:HBox>
+			<mx:TextInput width="475" id="nameInput" text="{board.name}"/>
+			<mx:Button label="Save" id="okButton" click="handleSave()"/>
+		  </mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="Owner" fontWeight="bold">
+		  <mx:HBox>
+		 	<mx:ComboBox id="ownerChooser"
+		    	width="200"
+		    	dataProvider="{__model.users}"
+		    	selectedIndex="{ownerIndex()}"
+		    	labelFunction="fullName"
+		    	prompt="Select an owner..."
+		    	/>
+			<mx:LinkButton label="Add/Delete Users?" textDecoration="underline" id="userButton" click="toggleManageUsers()"/>
+		  </mx:HBox>
+		  <views:ManageUsers id="manageUsers" includeInLayout="false" visible="false" />
+		</mx:FormItem>
+		<mx:FormItem label="SLA" toolTip="SLA - Service Level Agreement" fontWeight="bold">
+		  <mx:HBox>
+		    <mx:NumericStepper id="slaLimit"
+		    	maximum="999" minimum="0" value="{board.sla}" />
+		    <mx:Label text=" in number of days" />
+		  </mx:HBox>
+		</mx:FormItem>
+		<mx:FormItem label="Purpose" fontWeight="bold" height="374">
+	          <mx:RichTextEditor id="boardPolicyText"
+	 			width="535" height="100%" styleName="myPanelTitle"
+	 			creationComplete="boardPolicyTextInit()"
+	           	htmlText="{board.policy}"/>
+		</mx:FormItem>
+	  </mx:Form>
+  	</mx:Canvas>
+  	<mx:Canvas id="boardTypeCanvas" label="View" horizontalScrollPolicy="off" 
+  			   width="686" height="100%" doubleClickEnabled="true" 
+  			   showEffect="{fadeIn}" hideEffect="{fadeOut}" >
+  		<mx:Spacer height="30" />
+	    <views:BoardTypesView id="typesView"
+	    	horizontalAlign="center" width="100%" height="100%"/>
+  	</mx:Canvas>
+  	
+  </mx:ViewStack>
+
+</panel:SuperPanelPlus>

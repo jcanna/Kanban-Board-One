@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:Canvas  xmlns:mx="http://www.adobe.com/2006/mxml" backgroundColor="#FBFE20" 
+	cornerRadius="5" 
+	height="52" 
+	width="160" 
+	borderStyle="solid" 
+	borderColor="#B7BABC"
+	creationComplete="init()"
+	alpha="{myAlpha}"
+	includeInLayout="{seeMe}"
+	visible="{seeMe}"
+	click="clickHandler(event)"
+	rollOver="{showButtons = true}"
+	rollOut="{showButtons = false}"
+	mouseDownEffect="{glowImage}" mouseUpEffect="{unglowImage}"
+	>
+
+	<mx:Script>
+		<![CDATA[
+			import models.Column;
+			import mx.events.CloseEvent;
+			import business.events.MoveCardEvent;
+			import mx.managers.DragManager;
+			import helpers.MouseMoveAndClickNegotiator;
+			import business.events.SaveCardEvent;
+			import mx.core.DragSource;
+			import mx.events.DragEvent;
+			import helpers.StringHelper;
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+			import mx.binding.utils.ChangeWatcher;
+			import mx.events.PropertyChangeEvent;
+			import mx.managers.PopUpManager;
+			import business.events.AddCardEvent;
+			import business.events.DeleteCardEvent;
+			import business.events.GetCardDetailsEvent;
+			import helpers.UrlHelper;
+			import model.ModelLocator;
+			import models.Card;
+			import models.Tag;
+			import models.Type;
+			import models.User;
+			import views.CardDetail;
+			
+			[Bindable]
+			public var card:Card;
+			[Bindable]
+			public var type:Type;
+			[Bindable]
+			public var myContextMenu:ContextMenu = new ContextMenu();
+			[Bindable]
+			private var myAlpha:Number = 1.0;
+			[Bindable]
+			private var seeMe:Boolean = true;
+			[Bindable]
+			private var showButtons:Boolean = false;
+			[Bindable]
+			private var cardTextColor:String = "0x000000";
+			
+			private function init():void
+			{
+				myContextMenu.hideBuiltInItems();
+				var item:ContextMenuItem = new ContextMenuItem("View Card");
+            	myContextMenu.customItems.push(item);
+            	
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, viewCardHandler);
+				item = new ContextMenuItem("Edit Card");
+            	myContextMenu.customItems.push(item);
+            	
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, editCardHandler);
+				item = new ContextMenuItem("Delete Card");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, deleteHandler);
+				item = new ContextMenuItem("Copy Card (Basics Only)");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, cloneHandler);
+				item = new ContextMenuItem("Copy Card as Peer (Same Parent)");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, cloneAsPeerHandler);
+				item = new ContextMenuItem("Copy Card as Child");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, cloneAsChildHandler);
+				item = new ContextMenuItem("Copy Card URL to Clipboard");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, cardURLHandler);
+				item = new ContextMenuItem("E-mail Card Owner");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, emailOwnerHandler);
+            	this.contextMenu = myContextMenu;
+            	setCardType(ModelLocator.getInstance().currentBoardTypes);
+            	filter();
+				checkDaysInColumn();
+				
+				var mouseEventsHandler = new MouseMoveAndClickNegotiator(this);
+            	mouseEventsHandler.addEventListener(MouseEvent.MOUSE_DOWN, beginDragging);
+            	
+            	addEventListener(DragEvent.DRAG_ENTER, dragEnterHandler);
+            	addEventListener(DragEvent.DRAG_DROP, handleDrop);
+            	
+			}
+			
+			private function beginDragging(event:Event) {
+		            var dragSource:DragSource = new DragSource();
+		            dragSource.addData(card, 'card');
+					DragManager.doDrag(this, dragSource, event);
+			}
+			
+			private function handleDrop(event:DragEvent) {
+				if (event.dragSource.hasFormat('card'))
+				{
+					ModelLocator.getInstance().statusMessages.addItemAt( "Moving Card... ",0 );
+		            var movedCard:Card = event.dragSource.dataForFormat('card');
+					var eventToDispatch = new MoveCardEvent(movedCard, this.card);
+		            eventToDispatch.dispatch();
+				}
+			}
+			
+			private function dragEnterHandler(event:DragEvent) {
+				if ((event.dragInitiator != this) && event.dragSource.hasFormat("card")) 
+					DragManager.acceptDragDrop(this);
+			}
+
+		    private function clickHandler(event:MouseEvent)
+		    {
+		    	if (event.target == copyButton) {
+		    		cloneHandler(null);
+		    	} else if (event.target == editButton)	{
+		    		editCardHandler(null);
+		    	} else if (event.target == cardUrlButton)	{
+		    		cardURLHandler(null);
+		    	} else {
+		    		viewCardHandler(event);
+		    	}
+		    }
+		    
+			private var tagActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	ModelLocator.getInstance(), ["currentTag"], checkTagFilter );
+
+			private var ownerActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	ModelLocator.getInstance(), ["ownerFilter"], checkOwnerFilter );
+
+			private var typeActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	ModelLocator.getInstance(), ["currentBoardTypes"], checkTypeChange );
+
+			private function checkTypeChange( pce:PropertyChangeEvent ) 
+			{
+				if (this.card == null) return;
+				setCardType(pce.newValue);
+			}
+			private function setCardType(types:ArrayCollection):void
+			{
+				for each (var newType:Type in types) {
+					if (newType.id == this.card.type_id) {
+						this.type = newType;
+					} 
+				}
+			}
+			private function checkTagFilter( pce:PropertyChangeEvent ) 
+			{
+				filter();
+			}
+
+			private function checkOwnerFilter( pce:PropertyChangeEvent ) 
+			{
+				filter();
+			}
+			private function checkDaysInColumn() 
+			{
+				if (this.card == null || ModelLocator.getInstance().currentBoard == null) return;
+				for each (var column:Column in ModelLocator.getInstance().currentBoard.columns)
+				{
+					if (card.column_id == column.id)
+					{
+						if (card.days_in_column == 0 || card.days_in_column == '?') return;
+						var cardDays:Number = new Number(card.days_in_column);
+						var columnAverageDays:Number = new Number(column.average_days_in_column);
+						if (columnAverageDays < 1) return;
+						if (cardDays > (columnAverageDays*2))
+						{
+							cardTextColor = "0xCC0000";
+						}
+						break;
+					}
+				}
+				
+			}
+			private function filter() 
+			{
+				if (this.card == null) return;
+				if (ModelLocator.getInstance().user == null ||
+					ModelLocator.getInstance().user.show_filter_cards == 'true') {
+					myAlpha = 0.4;
+				} else {
+					seeMe = false;
+				}
+				if (ModelLocator.getInstance().ownerFilter == null || 
+					ModelLocator.getInstance().ownerFilter.id == this.card.user_id)
+					checkIfCardHasFilterTag();
+			}
+			private function checkIfCardHasFilterTag():void
+			{
+				if (ModelLocator.getInstance().currentTag == null)
+				{
+					verifiedVisible();
+				} else {
+					for each (var tagCard:Card in ModelLocator.getInstance().currentTag.cards) {
+						if (tagCard.id == this.card.id) {
+							verifiedVisible();
+						} 
+					}
+				}
+			}
+			private function verifiedVisible():void
+			{
+				seeMe = true;
+				myAlpha = 1.0; 
+			}
+			private function viewCardHandler(event:Event):void
+			{
+				viewCard();
+			}			
+			private function viewCard():void
+			{
+				var cardDetailView:CardDetail = new CardDetail();
+				ModelLocator.getInstance().cardDetailViewStackIndex = CardDetail.VIEW_ONLY;
+				popupCardDetails(cardDetailView);
+			}
+			private function editCardHandler(event:ContextMenuEvent):void
+			{
+				var cardDetailView:CardDetail = new CardDetail();
+				ModelLocator.getInstance().cardDetailViewStackIndex = CardDetail.EDIT_VIEW;
+				popupCardDetails(cardDetailView);
+			}
+			private function popupCardDetails(cardDetailView:CardDetail)
+			{
+				var eventToDispatch:Event = new GetCardDetailsEvent(card);
+				eventToDispatch.dispatch();
+				PopUpManager.addPopUp(cardDetailView, this, false);
+			}
+			private function deleteHandler(event:Event):void
+			{
+			     Alert.show("Do you really intend to delete this card?", "Delete Confirmation", (Alert.YES | Alert.NO), this, deleteAlertHandler);
+			}
+			private function deleteAlertHandler(event:CloseEvent):void
+			{
+				if (event.detail==Alert.YES)
+				{
+					ModelLocator.getInstance().statusMessages.addItemAt( "Deleting Card....",0 );
+					var eventToDispatch:Event = new DeleteCardEvent(card);
+					eventToDispatch.dispatch();
+				}
+			}
+			private function cloneHandler(event:Event):void
+			{
+				var newCard:Card = new Card();
+				newCard.name = card.name + " (copy)";
+				cloneThisCard( newCard );
+			}
+			private function cloneAsPeerHandler(event:ContextMenuEvent):void
+			{
+				var newCard:Card = new Card();
+				newCard.name = card.name + " (peer)";
+				if (card.hasOwnProperty("parent_id")) newCard.parent_id = card.parent_id;
+				cloneThisCard( newCard );
+			}
+			private function cloneAsChildHandler(event:ContextMenuEvent):void
+			{
+				var newCard:Card = new Card();
+				newCard.name = card.name + " (child)";
+				newCard.parent_id = card.id;
+				cloneThisCard( newCard );
+			}			
+			private function cloneThisCard(newCard:Card):void {
+				ModelLocator.getInstance().statusMessages.addItemAt( "Copying Card: " + card.name ,0 );
+				newCard.type_id = card.type_id;
+				newCard.column_id = card.column_id;
+				newCard.description = card.description;
+				var eventToDispatch = new AddCardEvent( newCard );
+				eventToDispatch.dispatch();
+			}
+			private function cardURLHandler(event:Event):void {
+				UrlHelper.cardUrlToClipboard(card.id);
+			}
+			private function emailOwnerHandler(event:ContextMenuEvent):void	{
+				if (card.user_id.length < 1) {
+					Alert.show("This card's owner has not been selected.");
+					return;
+				}
+				for each (var user:User in ModelLocator.getInstance().users) {
+					if (card.user_id == user.id) {
+						UrlHelper.emailUser( user );
+						return;
+					}
+				}
+			}
+			private function getCardTypeColor()
+			{
+				for each (var type:Type in __types)
+				{
+					if (card.type_id == type.id)
+					{
+						return type.hex_color;
+					}
+				}
+			}
+					
+		]]>
+	</mx:Script>
+	
+	<mx:Glow id="glowImage" duration="500" alphaFrom="1.0" alphaTo="0.2" blurXFrom="0.0" blurXTo="50.0" blurYFrom="0.0" blurYTo="50.0" color="0x22A050"/>
+	<mx:Glow id="unglowImage" duration="500" alphaFrom="0.2" alphaTo="1.0" blurXFrom="50.0" blurXTo="0.0" blurYFrom="50.0" blurYTo="0.0" color="0x3380DD"/>
+
+	<mx:HBox>
+		<mx:VBox id="typeColorDisplay" width="6" height="50" backgroundColor="{type.hex_color}" />
+		<mx:Text id="textForCard" text="|{card.days_in_column}| {card.name}" truncateToFit="true" 
+			x="5" y="5" width="124" height="50" 
+			selectable="false" fontSize="12"
+			alpha="{myAlpha}" color="{cardTextColor}"
+			 />
+		<mx:VBox id="buttonDisplay" width="10" height="50" horizontalAlign="left" >
+	    	<mx:Button width="6" height="6" id="editButton" visible="{showButtons}" includeInLayout="{showButtons}"
+	       				icon="@Embed(source='assets/edit_small.gif')" toolTip="Edit Card." />
+       		<mx:Spacer height="1" />
+	    	<mx:Button width="6" height="6" id="cardUrlButton" visible="{showButtons}" includeInLayout="{showButtons}"
+	       				icon="@Embed(source='assets/url_16x16.gif')" toolTip="Copy Card URL to Clipboard." />
+       		<mx:Spacer height="1" />
+	    	<mx:Button width="6" height="6" id="copyButton" visible="{showButtons}" includeInLayout="{showButtons}"
+	    				icon="@Embed(source='assets/copy_16x16.gif')" toolTip="Copy Card (Basics Only)" />
+		</mx:VBox>
+
+	</mx:HBox>
+	
+</mx:Canvas>

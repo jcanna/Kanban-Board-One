@@ -1,0 +1,52 @@
+Panel {
+	headerHeight: 			22;
+	borderThicknessTop: 	0;
+	borderThicknessBottom: 	0;
+	borderThicknessLeft: 	0;
+	borderThicknessRight: 	0;
+	color:					#000000;
+	fontSize:				10;
+	titleStyleName: 		"mypanelTitle";
+}
+.mypanelTitle {
+	fontFamily: Arial;
+	fontSize: 	11;
+	color:		#ffffff;
+	fontWeight: bold;
+}
+.menuPanel {
+	headerHeight:			0;
+	borderStyle: 			solid;
+	borderColor: 			#999999;
+	borderThickness: 		1;
+	borderSides: 			bottom;
+	cornerRadius: 			0;
+	backgroundColor: 		#efefef;
+	dropShadowEnabled: 		false;
+}
+
+.closeButton {
+	upSkin:        Embed('/assets/closeButton.png');
+	overSkin:      Embed('/assets/closeButton.png');
+	downSkin:      Embed('/assets/closeButton.png');
+	disabledSkin:  Embed('/assets/closeButton.png');
+}
+.increaseButton {
+	upSkin:        Embed('/assets/increaseButton.png');
+	overSkin:      Embed('/assets/increaseButton.png');
+	downSkin:      Embed('/assets/increaseButton.png');
+	disabledSkin:  Embed('/assets/increaseButton.png');
+}
+.decreaseButton {
+	upSkin:        Embed('/assets/decreaseButton.png');
+	overSkin:      Embed('/assets/decreaseButton.png');
+	downSkin:      Embed('/assets/decreaseButton.png');
+	disabledSkin:  Embed('/assets/decreaseButton.png');
+}
+
+.resizeHandler {
+	upSkin:        Embed('/assets/resizeHandler.png');
+	overSkin:      Embed('/assets/resizeHandler.png');
+	downSkin:      Embed('/assets/resizeHandler.png');
+	disabledSkin:  Embed('/assets/resizeHandler.png');
+}

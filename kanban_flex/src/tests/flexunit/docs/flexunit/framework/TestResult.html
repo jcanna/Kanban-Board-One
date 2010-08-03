@@ -1,0 +1,499 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="../../style.css" type="text/css" media="screen">
+<link rel="stylesheet" href="../../print.css" type="text/css" media="print">
+<meta content="TestResult,flexunit.framework.TestResult,syncToFrame,run,continueRun,addError,addFailure,errorCount,errorsIterator,failureCount,failuresIterator,shouldStop,stop,wasSuccessful,addListener,removeListener,runCount,startTest,endTest" name="keywords">
+<title></title>
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../../asdoc.js"></script><script type="text/javascript" language="javascript">
+<!--
+				asdocTitle = 'TestResult - FlexUnit - ActionScript 3.0 Unit Testing Framework';
+				window.onload = configPage;
+			--></script>
+<div class="pageTop"></div>
+<table style="display:none" id="titleTable" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+<td style="padding-left:5px" width="64" valign="left"><img title="Macromedia Logo" alt="Macromedia Logo" border="0" src="../../images/mm-icon.jpg"></td><td valign="middle" align="center">
+<h1 style="font-size:20px">FlexUnit - ActionScript 3.0 Unit Testing Framework</h1>
+</td>
+</tr>
+<tr>
+<td height="5px" colspan="2"></td>
+</tr>
+</table>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell1"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;| <a href="../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../index.html?flexunit/framework/TestResult.html&amp;./flexunit/framework/class-list.html" id="framesLink1">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink1">No&nbsp;Frames</a></span>
+</div>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>flexunit.framework<h1>Class TestResult</h1>
+<p></p>
+<pre>
+<script type="text/javascript">var tabCount=3;</script><script type="text/javascript">var showInheritance = false;</script><script type="text/javascript">if (showInheritance) { for (var cnt=0; cnt < tabCount; cnt++)document.write(" ");document.write("<img src='../../images/inherit-arrow.jpg' />");document.write(" ");};</script><script type="text/javascript">document.writeln("flexunit.framework.TestResult");</script>
+</pre>
+<br>
+<hr>
+<p></p>public class <b>TestResult</b>
+<p></p>
+ A <code>TestResult</code> collects the results of an executing
+ Test. It is an instance of the Collecting Parameter pattern.
+ The test framework distinguishes between <i>failures</i> and <i>errors</i>.
+ A failure is anticipated and checked for with assertions. Errors are
+ unanticipated problems.
+  <p></p>
+<p></p>
+<b>See also</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><a href="Test.html" target="">Test</a></td>
+</tr>
+</table>
+<hr>
+<br>
+<br>
+<a name="propertySummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#syncToFrame"><b>syncToFrame</b></a>:Boolean</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+</table>
+<br>
+<br>
+<a name="constructorSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"></td><td align="left" valign="top"><code><a href="#TestResult()"><b>TestResult</b></a>()</code></td>
+</tr>
+</table>
+<br>
+<br>
+<a name="methodSummary"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Summary</b></font></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#addError()"><b>addError</b></a>(test:<a href="../framework/Test.html">Test</a>, error:Error) : void</code></td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#addFailure()"><b>addFailure</b></a>(test:<a href="../framework/Test.html">Test</a>, error:<a href="../framework/AssertionFailedError.html">AssertionFailedError</a>) : void</code></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#addListener()"><b>addListener</b></a>(listener:<a href="../framework/TestListener.html">TestListener</a>) : void</code></td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#continueRun()"><b>continueRun</b></a>(testCase:<a href="../framework/TestCase.html">TestCase</a>) : void</code></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#endTest()"><b>endTest</b></a>(test:<a href="../framework/Test.html">Test</a>) : void</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#errorCount()"><b>errorCount</b></a>() : Number</code></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#errorsIterator()"><b>errorsIterator</b></a>() : <a href="../utils/Iterator.html">Iterator</a></code></td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#failureCount()"><b>failureCount</b></a>() : Number</code></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#failuresIterator()"><b>failuresIterator</b></a>() : <a href="../utils/Iterator.html">Iterator</a></code></td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#removeListener()"><b>removeListener</b></a>(listener:<a href="../framework/TestListener.html">TestListener</a>) : void</code></td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#run()"><b>run</b></a>(testCase:<a href="../framework/TestCase.html">TestCase</a>) : void</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#runCount()"><b>runCount</b></a>() : Number</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#shouldStop()"><b>shouldStop</b></a>() : Boolean</code></td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#startTest()"><b>startTest</b></a>(test:<a href="../framework/Test.html">Test</a>) : void</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row1">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#stop()"><b>stop</b></a>(stopTests:Boolean) : void</code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+</tr>
+<tr class="row0">
+<td align="right" valign="top" width="50px"><code><font style="bold" size="1"></font></code></td><td valign="top"><code><a href="#wasSuccessful()"><b>wasSuccessful</b></a>() : Boolean</code></td>
+</tr>
+</table>
+<br>
+<br>
+<a name="propertyDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Property Detail</b></font></td>
+</tr>
+</table>
+<a name="syncToFrame"></a>
+<p></p>
+<h2>syncToFrame Property</h2>
+<p></p>
+<code>public var <b>syncToFrame</b></code><code>:Boolean</code>
+<br>
+<br>
+<br>
+<br>
+<a name="constructorDetail"></a>
+<table class="withBorder" width="100%" cellpadding="3" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Constructor Detail</b></font></td>
+</tr>
+</table>
+<p></p>
+<h2>TestResult Constructor<a name="TestResult()"></a>
+</h2>
+<p></p>
+<p>
+<code>public function <b>TestResult</b>()</code>
+</p>
+<br>
+<br>
+<a name="methodDetail"></a>
+<table class="withBorder" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+<td class="SummaryTableHeader" bgcolor="#CCCCCC" colspan="2"><font size="+1"><b>Method Detail</b></font></td>
+</tr>
+</table>
+<a name="addError()"></a>
+<p></p>
+<h2>addError Method</h2>
+<p></p>
+<p>
+<code>public function <b>addError</b>(test:<a href="../framework/Test.html">Test</a>, error:Error) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>test</b>:<a href="../framework/Test.html">Test</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer"></td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><b>error</b>:Error</code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="addFailure()"></a>
+<p></p>
+<h2>addFailure Method</h2>
+<p></p>
+<p>
+<code>public function <b>addFailure</b>(test:<a href="../framework/Test.html">Test</a>, error:<a href="../framework/AssertionFailedError.html">AssertionFailedError</a>) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>test</b>:<a href="../framework/Test.html">Test</a></code></td>
+</tr>
+<tr>
+<td class="paramSpacer"></td>
+</tr>
+<tr>
+<td width="20px"></td><td><code><b>error</b>:<a href="../framework/AssertionFailedError.html">AssertionFailedError</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="addListener()"></a>
+<p></p>
+<h2>addListener Method</h2>
+<p></p>
+<p>
+<code>public function <b>addListener</b>(listener:<a href="../framework/TestListener.html">TestListener</a>) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>listener</b>:<a href="../framework/TestListener.html">TestListener</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="continueRun()"></a>
+<p></p>
+<h2>continueRun Method</h2>
+<p></p>
+<p>
+<code>public function <b>continueRun</b>(testCase:<a href="../framework/TestCase.html">TestCase</a>) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>testCase</b>:<a href="../framework/TestCase.html">TestCase</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="endTest()"></a>
+<p></p>
+<h2>endTest Method</h2>
+<p></p>
+<p>
+<code>public function <b>endTest</b>(test:<a href="../framework/Test.html">Test</a>) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>test</b>:<a href="../framework/Test.html">Test</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="errorCount()"></a>
+<p></p>
+<h2>errorCount Method</h2>
+<p></p>
+<p>
+<code>public function <b>errorCount</b>() : Number</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
+</tr>
+</table>
+<hr>
+<a name="errorsIterator()"></a>
+<p></p>
+<h2>errorsIterator Method</h2>
+<p></p>
+<p>
+<code>public function <b>errorsIterator</b>() : <a href="../utils/Iterator.html">Iterator</a></code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../utils/Iterator.html">Iterator</a></code></td>
+</tr>
+</table>
+<hr>
+<a name="failureCount()"></a>
+<p></p>
+<h2>failureCount Method</h2>
+<p></p>
+<p>
+<code>public function <b>failureCount</b>() : Number</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
+</tr>
+</table>
+<hr>
+<a name="failuresIterator()"></a>
+<p></p>
+<h2>failuresIterator Method</h2>
+<p></p>
+<p>
+<code>public function <b>failuresIterator</b>() : <a href="../utils/Iterator.html">Iterator</a></code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code><a href="../utils/Iterator.html">Iterator</a></code></td>
+</tr>
+</table>
+<hr>
+<a name="removeListener()"></a>
+<p></p>
+<h2>removeListener Method</h2>
+<p></p>
+<p>
+<code>public function <b>removeListener</b>(listener:<a href="../framework/TestListener.html">TestListener</a>) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>listener</b>:<a href="../framework/TestListener.html">TestListener</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="run()"></a>
+<p></p>
+<h2>run Method</h2>
+<p></p>
+<p>
+<code>public function <b>run</b>(testCase:<a href="../framework/TestCase.html">TestCase</a>) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>testCase</b>:<a href="../framework/TestCase.html">TestCase</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="runCount()"></a>
+<p></p>
+<h2>runCount Method</h2>
+<p></p>
+<p>
+<code>public function <b>runCount</b>() : Number</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Number</code></td>
+</tr>
+</table>
+<hr>
+<a name="shouldStop()"></a>
+<p></p>
+<h2>shouldStop Method</h2>
+<p></p>
+<p>
+<code>public function <b>shouldStop</b>() : Boolean</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+<hr>
+<a name="startTest()"></a>
+<p></p>
+<h2>startTest Method</h2>
+<p></p>
+<p>
+<code>public function <b>startTest</b>(test:<a href="../framework/Test.html">Test</a>) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>test</b>:<a href="../framework/Test.html">Test</a></code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="stop()"></a>
+<p></p>
+<h2>stop Method</h2>
+<p></p>
+<p>
+<code>public function <b>stop</b>(stopTests:Boolean) : void</code>
+</p>
+<p></p>
+<b>Parameters</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20px"></td><td><code><b>stopTests</b>:Boolean</code></td>
+</tr>
+</table>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>void</code></td>
+</tr>
+</table>
+<hr>
+<a name="wasSuccessful()"></a>
+<p></p>
+<h2>wasSuccessful Method</h2>
+<p></p>
+<p>
+<code>public function <b>wasSuccessful</b>() : Boolean</code>
+</p>
+<p></p>
+<b>Returns</b>
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="20"></td><td><code>Boolean</code></td>
+</tr>
+</table>
+<br>
+<br>
+<hr>
+<br>
+<div align="right" class="topLinks" width="100%">
+<span><a href="#propertySummary">Properties</a>&nbsp;| <a href="#constructorSummary">Constructor</a>&nbsp;| <a href="#methodSummary">Methods</a></span>
+</div>
+<div style="padding-bottom:5px" align="right" class="topLinks" width="100%">
+<span style="display:none;font-size:14px;font-weight:bold" id="navigationCell2"><a onclick="loadClassListFrame('../../all-classes.html')" href="../../package-summary.html">All&nbsp;Packages</a>&nbsp;| <a onclick="loadClassListFrame('../../all-classes.html')" href="../../class-summary.html">All&nbsp;Classes</a>&nbsp;| <a onclick="loadClassListFrame('../../index-list.html')" href="../../all-index-A.html">Index</a>&nbsp;| <a href="../../appendixes.html">Appendixes</a>&nbsp;| <a href="../../index.html?flexunit/framework/TestResult.html&amp;./flexunit/framework/class-list.html" id="framesLink2">Frames</a><a onclick="parent.location=document.location" href="" style="display:none" id="noFramesLink2">No&nbsp;Frames</a></span>
+</div>
+<p></p>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Mon May 8 2006, 15:55 PDT</center>
+</body>
+</html>
+<!--Copyright &copy; 2005 Macromedia Inc. All rights reserved.Mon May 8 2006, 15:55 PDT-->

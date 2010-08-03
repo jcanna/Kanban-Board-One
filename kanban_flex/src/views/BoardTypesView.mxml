@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml" 
+	layout="vertical" width="544"
+	creationComplete="init()" xmlns:views="views.*">
+	<mx:Style source="assets/styles.css"/>
+    <mx:Script>
+	<![CDATA[
+		import models.Board;
+		import business.events.DeleteTypeEvent;
+		import mx.collections.ArrayCollection;
+		import business.events.SaveTypeEvent;
+		import models.Type;
+		import model.ModelLocator;
+		[Bindable]
+		public var __board:Board = ModelLocator.getInstance().currentBoard;
+		[Bindable]
+		public var __types:ArrayCollection = ModelLocator.getInstance().currentBoardTypes;
+		[Bindable]
+		public var type:Type;
+
+		private var headerTitle:String = "Card Types for board: '" + __board.name + "'";
+		public function init()
+		{
+			type = __types.length == 0 ? newType() : __types.getItemAt(0);
+		}
+		
+		public function newType():Type
+		{
+			var type = new Type();
+			type.board_id = __board.id;
+			type.name = "<Enter New Type Name>";
+			type.hex_color = "";
+			return type;
+		}
+		
+		public function handleCardTypeSave():void
+		{
+			ModelLocator.getInstance().statusMessages.addItemAt( "Saving Type...",0 );
+        	type.name = typeNameInput.text;
+        	type.hex_color = "0x" + cp.selectedColor.toString(16);
+        	var event = new SaveTypeEvent(type);
+        	event.dispatch();
+			resetFields();
+		}
+
+		public function handleTypeDelete():void
+		{
+			ModelLocator.getInstance().statusMessages.addItemAt( "Deleting Type...",0 );
+			var event = new DeleteTypeEvent(type);
+			event.dispatch();
+			resetFields();
+		}
+
+		private function resetFields():void
+		{
+			typeSelector.selectedIndex = -1;
+			typeNameInput.text = "";
+			cp.selectedColor = "000000";
+		}
+		
+    	]]>
+    </mx:Script>	
+
+  <mx:VBox horizontalAlign="center">
+	  <mx:Panel title="Board Type Legend" horizontalAlign="center" borderThickness="10" >
+	  	<views:BoardTypeLegend />
+	  </mx:Panel>
+	  <mx:Spacer />
+	  <mx:Panel width="374" height="166"
+	  			layout="absolute" title="{headerTitle}"
+	  			verticalScrollPolicy="off" horizontalScrollPolicy="off">
+	    <mx:Form name="Board Card Types" id="cardTypeForm" width="344" 
+	  	horizontalGap="8" verticalGap="6" defaultButton="{saveCardTypeButton}"  height="146" y="10">
+			<mx:FormItem label="Types" fontWeight="bold" required="false">
+			  <mx:HBox>
+		        <mx:ComboBox id="typeSelector" dataProvider="{__types}" labelField="name"
+		        	prompt="Select Type..."
+		        	change="{type = typeSelector.selectedItem;}" width="166" />
+	        	<mx:LinkButton label="New Type" click="{type = newType();}" />
+			  </mx:HBox>
+			</mx:FormItem>
+			<mx:FormItem label="Name" fontWeight="bold" required="true">
+				<mx:TextInput width="247" id="typeNameInput" text="{type.name}"/>	
+			</mx:FormItem>
+			<mx:FormItem label="Color" fontWeight="bold" required="true" width="299">
+			  <mx:HBox>
+				<mx:ColorPicker id="cp" showTextField="true" selectedColor="{type.hex_color}"/>
+		        <mx:Label color="0x000000" text="selectedColor: 0x{cp.selectedColor.toString(16)}"/>
+			  </mx:HBox>	
+			</mx:FormItem>
+			<mx:FormItem>
+			  <mx:HBox>
+				<mx:Button label="Save Card Type" id="saveCardTypeButton" click="handleCardTypeSave()"/>
+				<mx:Button label="Delete Type" id="deleteTypeButton" click="handleTypeDelete()"/>
+			  </mx:HBox>
+			</mx:FormItem>
+		</mx:Form>
+	  </mx:Panel>
+  </mx:VBox>  
+
+</mx:Module>

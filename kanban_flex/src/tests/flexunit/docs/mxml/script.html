@@ -1,0 +1,45 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MXML Tags</title>
+<link rel="stylesheet" href="../style.css" type="text/css">
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../asdoc.js"></script>
+<h2>
+<font size="-1">Compiler Tags</font>
+<br>Script</h2>
+<hr>
+<p></p>
+<b>Script</b>
+<br>
+	Tag implemented by the compiler
+
+	<p>You use the  &lt;mx:Script&gt; tag to define blocks of ActionScript code. ActionScript blocks can contain variable and function definitions.
+	You can place blocks of ActionScript code in the body of the tag, or you can include an external file by specifying the source with the <code>source</code> property of the tag, as shown below:
+
+<PRE>
+&lt;mx:Script source="<i>file_name.as</i>" /&gt;
+</PRE>
+
+	</p>
+	<p>The script within an &lt;mx:Script&gt; tag is accessible from any component in the MXML file. The &lt;mx:Script&gt;
+	tag must be located at the top level of the MXML file, within the Application or other top level component tag. You can
+	define multiple script blocks in your MXML files, but you should try to keep them in one location to improve readability.</p>
+	<p><b>MXML Syntax</b></p>
+	<p>When using a script block in the body of the tag, you must wrap the contents in a CDATA construct. This prevents the
+	compiler from interpreting the contents of the script block as XML, and allows ActionScript to be properly generated. As a
+	result, it is a good practice to write all your &lt;mx:Script&gt; and &lt;/mx:Script&gt; tags as follows:</p>
+
+
+<PRE> &lt;mx:Script<br>   &lt;![CDATA[<br>       //ActionScript statements<br>   ]]&gt;<br> &lt;/mx:Script&gt; </pre> </p>
+<hr>
+<p></p>
+<div class="liveDocsLink">
+<center>
+<a target="mm_livedocs" href="javascript:gotoLiveDocs('mxml/script.html','mxml-tags.html');">Submit Feedback on LiveDocs</a>
+</center>
+</div>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Tue Oct 11 2005, 23:44 PDT</center>
+</body>
+</html>

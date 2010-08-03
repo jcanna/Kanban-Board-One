@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="com.adobe.flexbuilder.debug.launchConfigurationType.flash">
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_APPLICATION" value=""/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_DEBUG_URL" value=""/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_PROFILE_URL" value=""/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_PROJECT" value="kanban_flex"/>
+<stringAttribute key="com.adobe.flexbuilder.debug.ATTR_RUN_URL" value=""/>
+<booleanAttribute key="com.adobe.flexbuilder.debug.ATTR_USE_DEFAULT_URLS" value="true"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/kanban_flex"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+</listAttribute>
+</launchConfiguration>

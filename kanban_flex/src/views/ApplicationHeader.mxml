@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:views="views.*"
+	layout="vertical"
+	horizontalAlign="left"
+	borderThickness="0"
+	backgroundColor="#FFFFFF"
+	creationComplete="init()">
+	
+	<mx:Script>
+		<![CDATA[
+			import helpers.NumberHelper;
+			import mx.events.PropertyChangeEvent;
+			import mx.binding.utils.ChangeWatcher;
+			import business.events.LoadUserProfileEvent;
+			import business.events.LoadTagReportEvent;
+			import helpers.RefreshHelper;
+			import helpers.StringHelper;
+			import business.events.DeleteBoardEvent;
+			import business.events.GetCardDetailsEvent;
+			import business.events.LoadBoardHistoryEvent;
+			import business.events.LoadBoardEvent;
+			import business.events.RefreshBoardListEvent;
+			import business.events.RefreshTagListEvent;
+			import helpers.UrlHelper;
+			import model.ModelLocator;
+			import models.Board;
+			import models.Column;
+			import models.Card;
+			import models.Tag;
+			import models.User;
+			import views.CardDetail;
+			import views.EditColumnView;
+			import views.BoardHistory;
+			import views.BoardEditView;
+			import mx.managers.PopUpManager;
+			import mx.controls.Alert;
+			import mx.collections.ArrayCollection;
+	        import flash.system.System;
+
+			[Bindable]
+			private var __model:ModelLocator=ModelLocator.getInstance();
+			[Bindable]
+			public var myContextMenu:ContextMenu = new ContextMenu();
+
+			private function init():void
+			{
+				myContextMenu.hideBuiltInItems();
+				var item:ContextMenuItem = new ContextMenuItem("New Board");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, newBoardHandler);
+            	item = new ContextMenuItem("Edit Board");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, editBoardHandler);
+				item = new ContextMenuItem("E-mail Board Owner");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, emailOwnerHandler);
+				item = new ContextMenuItem("Delete Board");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, boardDeleteHandler);
+				item = new ContextMenuItem("Add Column");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, newColumnHandler);
+            	item = new ContextMenuItem("Refresh Current Board");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, refreshHandler);
+            	item = new ContextMenuItem("Refresh Everything");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, refreshAllHandler);
+				item = new ContextMenuItem("Card Search (Show/Hide)");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, searchHandler);
+            	item = new ContextMenuItem("Type Legend (Show/Hide)");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, showHideTypeLegend);
+            	item = new ContextMenuItem("Export Board Cards");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, exportBoardCardsAsTSV);
+            	item = new ContextMenuItem("Copy Board URL to Clipboard");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, boardUrlHandler);
+				item = new ContextMenuItem("Board History Report");
+				item.separatorBefore = true;
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, boardHistoryHandler);
+/* 				item = new ContextMenuItem("Tag Selected Report");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, tagReportHandler);
+ */            	this.contextMenu = myContextMenu;
+				
+			}
+
+			private function boardUrlHandler(event:Event):void
+			{
+				UrlHelper.boardUrlToClipboard();
+			}
+			
+			private function showHideTypeLegend(event:Event):void
+			{
+				__model.showTypeLegend = !__model.showTypeLegend;
+			}
+
+			private function selectBoardChangeHandler(event:Event):void
+			{
+				callLoadBoardEvent(event.currentTarget.selectedItem.id);
+			}
+			private function callLoadBoardEvent(boardId:int):void
+			{
+				__model.statusMessages.addItemAt( "Loading Board...",0 );
+				var eventToDispatch:LoadBoardEvent = new LoadBoardEvent(boardId);
+				eventToDispatch.dispatch();
+				__model.showTypeLegend = true;
+				tagFilter.visible = true;
+				filterBy.visible = true;
+			}
+
+			private function switchUserProfile(event:Event):void 
+			{
+				__model.statusMessages.addItemAt( "Loading User Profile...",0 );
+				var user_id:int = userProfileSelector.selectedItem.id;
+				if (user_id == -1 || user_id == 0)
+				{
+					__model.user = null;
+					__model.userBoards = null;
+					__model.userTags = null;
+					userProfileSelector.selectedIndex = -1;
+				} else {
+					var eventToDispatch:LoadUserProfileEvent = new LoadUserProfileEvent(user_id);
+					eventToDispatch.dispatch();
+				}
+			}
+			private function editUserProfile():void {
+				if (userProfileSelector.selectedIndex < 1)
+				{
+					Alert.show("Please select a user from the list prior to editting their profile.");
+					return;
+				}
+				var userProfile:UserProfile = new UserProfile();
+				PopUpManager.addPopUp(userProfile, this, true);				
+			}
+
+			private var userBoardsActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	__model, ["userBoards"], setBoardsToProfile );
+			private var userTagsActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	__model, ["userTags"], setTagsToProfile );
+
+		 	private function setBoardsToProfile( pce:PropertyChangeEvent ):void
+		 	{
+				if (__model.userBoards == null || __model.userBoards.length == 0)
+				{
+					boardChooser.dataProvider =  __model.boards;
+					boardChooser.selectedIndex = __model.selectedBoardIndex(__model.currentBoard, __model.boards);
+				} else {
+					boardChooser.dataProvider =  __model.userBoards;
+					boardChooser.selectedIndex = __model.selectedBoardIndex(__model.currentBoard, __model.userBoards);
+				}
+			}
+		 	private function setTagsToProfile( pce:PropertyChangeEvent ):void
+		 	{
+				if (__model.userTags == null || __model.userTags.length == 0)
+				{
+					tagFilter.dataProvider =  __model.tags;
+					tagFilter.selectedIndex = __model.selectedTagIndex(__model.currentTag, __model.tags);
+				} else {
+					tagFilter.dataProvider =  __model.userTags;
+					tagFilter.selectedIndex = __model.selectedTagIndex(__model.currentTag, __model.userTags);
+				}
+			}
+
+			private function emailOwnerHandler(event:ContextMenuEvent):void	{
+				if (__model.currentBoard.user_id.length < 1) {
+					Alert.show("This board's owner has not been selected.");
+					return;
+				}
+				for each (var user:User in ModelLocator.getInstance().users) {
+					if (__model.currentBoard.user_id == user.id) {
+						UrlHelper.emailUser( user );
+						return;
+					}
+				}
+			}
+			private function refreshHandler(event:Event):void
+			{
+				var eventToDispatch:LoadBoardEvent = new LoadBoardEvent();
+				eventToDispatch.dispatch();
+			}
+			private function refreshAllHandler(event:Event):void
+			{
+				RefreshHelper.refreshEverything();
+				if (boardChooser.selectedIndex != -1)
+				{
+					var eventToDispatch:LoadBoardEvent = new LoadBoardEvent();
+					eventToDispatch.dispatch();
+				}
+			}
+			private function boardHistoryHandler(event:Event):void
+			{
+				var eventToDispatch:LoadBoardHistoryEvent = new LoadBoardHistoryEvent();
+				eventToDispatch.dispatch();
+				var boardHistory:BoardHistory = new BoardHistory();
+				PopUpManager.addPopUp(boardHistory, this, true);	
+			}
+/* 			private function tagReportHandler(event:Event):void
+			{
+	            if (tagFilter.selectedIndex < 1) {
+            		Alert.show("Please select a tag in the filters before running this report.");
+					return;
+	            }
+				var eventToDispatch:LoadTagReportEvent = new LoadTagReportEvent();
+				eventToDispatch.dispatch();
+ 				var tagReport:TagReport = new TagReport();
+				PopUpManager.addPopUp(tagReport, this, true);	
+ 			}
+ */			private function boardDeleteHandler(event:Event):void
+			{
+				__model.statusMessages.addItemAt( "Deleting Board...",0 );
+				var eventToDispatch:DeleteBoardEvent = new DeleteBoardEvent(__model.currentBoard);
+				eventToDispatch.dispatch();
+			}
+			private function newBoardHandler(event:Event):void
+			{
+				var board:Board = new Board();
+				board.name="<Enter new board name>";
+				launchBoardPopUp(board);
+			}
+			private function editBoardHandler(event:Event):void
+			{
+				launchBoardPopUp(__model.currentBoard);
+			}
+			
+			private function launchBoardPopUp(board:Board):void
+			{
+				var boardEditView:BoardEditView = new BoardEditView();
+				boardEditView.board = board;
+				PopUpManager.addPopUp(boardEditView, this, true);	
+			}
+
+			private function newColumnHandler(event:Event):void
+			{
+				if (__model.currentBoard.id == null)
+				{
+	            	Alert.show("Please select a board before attempting to add a column.");
+					return;
+				}
+				__model.statusMessages.addItemAt( "Adding Column...",0 );
+				var column:Column = new Column();
+				column.id = -1;
+				column.position = __model.currentBoard.columns.length+1;
+				column.name="<Enter new column name>";
+				column.policy = "";
+				column.board_id = __model.currentBoard.id;
+				column.card_limit = 1;
+				var editColumnView:EditColumnView = new EditColumnView();
+				editColumnView.column = column;
+				PopUpManager.addPopUp(editColumnView, this, true);	
+			}
+			
+			private function filterTags():void
+			{
+				if (tagFilter.selectedIndex < 1) {
+					__model.currentTag = null;
+					return;
+				}
+				if (__model.userTags == null || __model.userTags.length < 1) {
+					__model.currentTag = tagFilter.selectedItem;
+				} else {
+					//Instead of using the Tag object attached to the user, we use the global one that already has
+					//cards, etc. attached as child objects.
+					for each (var iTag:Tag in __model.tags) {
+						if (iTag.id == tagFilter.selectedItem.id) {
+							__model.currentTag = iTag;
+							return;
+						}
+					}
+				}
+			}
+			
+			private function filterOwner():void
+			{
+				__model.ownerFilter = ownerFilter.selectedIndex == 0 ? null : ownerFilter.selectedItem;
+			}
+			private function fullName(item:Object):String {
+				return StringHelper.fullName( item );
+			}
+			
+	        public function exportBoardCardsAsTSV(event:Event):void
+	        {
+	        	var board:Board = __model.currentBoard;
+	        	if (board == null || board.columns == null || board.columns.length == 0) {
+	        		Alert.show("Please select a board with columns and cards before exporting to the clipboard.");
+	        		return;
+	        	}
+	            var TSVString:String = "";
+	            //create the headers row
+				TSVString += "Board Name\t\t" + board.name + "\n";
+	            TSVString += "Column Id" + "\t";
+	            TSVString += "Column Name" + "\t";
+	            TSVString += "Card Id" + "\t";
+	            TSVString += "Card Name" + "\t";
+	            TSVString += "Type Id" + "\t";
+	            TSVString += "Card Parent Id" + "\t";
+	            TSVString += "Card Description (RichText)" + "\n";
+				//create the data rows
+	            for each(var column:Column in board.columns)
+	            {
+		            for each(var card:Card in column.cards)
+		            {
+		                TSVString += column.id + "\t";
+		                TSVString += column.name + "\t";
+		                TSVString += card.id + "\t";
+		                TSVString += card.name + "\t";
+		                TSVString += card.type_id + "\t";
+		                TSVString += card.parent_id + "\t";
+		                TSVString += card.description + "\n";
+		            }
+	            }
+	               
+	            // Copy the TSV string to the clipboard
+	            System.setClipboard(TSVString);
+               	Alert.show("Board " + board.name + "'s cards have been copied to the clipboard in Tab Separated Variable (TSV) format, and are ready to paste into Excel, etc..");
+
+	        }
+
+			private function showSearch(user:User):Boolean {
+				if (user == null) return false;
+				return __model.user.show_search == 'true';
+			}
+			private function searchHandler(event:Event):void {
+				searchArea.visible = !searchArea.visible;
+				searchArea.includeInLayout = !searchArea.includeInLayout;
+			}
+			private function search():void {
+				__model.searchResults = StringHelper.searchInCards( __model.allCards, searchEntry.text );
+				for each (var card:Card in __model.searchResults)
+				{
+					for each (var column:Column in __model.allColumns)
+					{
+						if (card.column_id == column.id)
+						{
+							card.column_name = column.name;
+							card.board_id = column.board_id;
+						}
+					}
+				}
+				searchResults.selectedIndex = -1;
+			}
+			private function searchCardName(item:Object):String {
+				return StringHelper.searchCardName( item );
+			}
+			private function goToCard():void {
+				var card:Card = searchResults.selectedItem;
+				if (card.hasOwnProperty("board_id") && (card.board_id != __model.currentBoard.id))
+				{
+					callLoadBoardEvent( card.board_id );
+				}
+				var eventToDispatch:Event = new GetCardDetailsEvent(card);
+				eventToDispatch.dispatch();
+				PopUpManager.addPopUp(new CardDetail(), this.parent, false);
+			}
+			
+			private function getCycleTime(board:Board):String
+			{
+				if (board == null) cycle_time.visible = false;
+				var aggregateTotal:Number = new Number(0);
+				for each (var column:Column in board.columns)
+				{
+					aggregateTotal += new Number(column.average_days_in_column);
+				}
+				cycle_time.visible = aggregateTotal > +0 ? true : false;
+				return NumberHelper.getFormattedNumber(aggregateTotal, 1);
+			}
+
+			private function getWorkInProcess(board:Board):String
+			{
+				if (board == null) current_wip.visible = false;
+				var aggregateWIP:Number = new Number(0);
+				for each (var column:Column in board.columns)
+				{
+					aggregateWIP += new Number(column.cards.length);
+				}
+				current_wip.visible = aggregateWIP > +0 ? true : false;
+				return NumberHelper.getFormattedNumber(aggregateWIP, 0);
+			}
+
+		]]>
+	</mx:Script>
+	
+	<mx:HBox verticalAlign="bottom">
+	  <mx:VBox>
+		<mx:HBox>
+         	<mx:ComboBox dataProvider="{__model.users}"
+				id="userProfileSelector"
+				width="140" fontSize="9" height="15"
+				toolTip="Switch User Profile"
+				prompt="Select User Profile..."
+				change="switchUserProfile(event)"
+				labelFunction="fullName"
+				selectedIndex="{__model.selectedOwnerIndex(__model.user, __model.users)}" />
+			<mx:LinkButton id="editUserProfileLink" label="Edit Profile" color="0x3380DD" click="editUserProfile()"
+         				textDecoration="underline" fontSize="8" fontWeight="normal" />
+		</mx:HBox>
+		<mx:ComboBox dataProvider="{__model.statusMessages}"
+			width="308" fontSize="9" height="15"
+			toolTip="Status and Action History Viewer"
+			selectedIndex="{__model.statusMessages.length - __model.statusMessages.length}" />
+	  </mx:VBox>
+	  <mx:Spacer width="5" />
+	  <mx:VBox horizontalAlign="right">
+		<mx:HBox verticalAlign="bottom">
+		    <mx:Label text="Select Board" fontSize="16" fontWeight="bold"/>
+		    <mx:ComboBox 
+		    	id="boardChooser" width="400" 
+		    	dataProvider="{__model.boards}"	labelField="name" 
+		    	selectedIndex="{__model.selectedBoardIndex(__model.currentBoard, __model.boards)}" 
+		    	prompt="Select a Kanban Board..."
+		    	change="selectBoardChangeHandler(event)"
+		    	/>
+		</mx:HBox>
+		<mx:HBox verticalAlign="bottom">
+		    <mx:Label id="filterBy" fontWeight="bold" text="Filter by"/>
+		    <mx:ComboBox id="tagFilter" 
+		    	dataProvider="{__model.tags}" labelField="name"
+		    	selectedIndex="{__model.selectedTagIndex(__model.currentTag,__model.tags)}"
+		    	prompt="Tags" change="filterTags()"
+		    	width="233" />
+		    <mx:ComboBox id="ownerFilter" 
+		    	dataProvider="{__model.users}" labelFunction="fullName"
+		    	selectedIndex="{__model.selectedOwnerIndex(__model.ownerFilter,__model.users)}"
+		    	prompt="Owner" change="filterOwner()"
+		    	width="160" />
+		</mx:HBox>
+	  </mx:VBox>
+	  <mx:Spacer width="5" />
+	  <mx:VBox horizontalAlign="left" verticalAlign="top">
+   		<mx:Label id="cycle_time" text="CT: {getCycleTime(__model.currentBoard)} days"
+   				visible="false" fontSize="12" fontWeight="bold" toolTip="Average Cycle Time" />
+   		<mx:Label id="current_wip" text="WIP: {getWorkInProcess(__model.currentBoard)}"
+   				visible="false" fontSize="12" fontWeight="bold" toolTip="Current Work In Process" />
+	  </mx:VBox>
+
+	</mx:HBox>
+
+	<mx:HBox horizontalAlign="left" verticalAlign="center" id="searchArea" 
+		visible="{showSearch(__model.user)}" includeInLayout="{showSearch(__model.user)}" >
+	    <mx:Label id="searchBy" fontWeight="bold" text="Search" />
+        <mx:TextInput id="searchEntry" toolTip="Enter Search Criteria (Ignores Case)" 
+        	textAlign="right" fontSize="10" />
+        <mx:Button width="16" height="16" id="searchButton"
+	       	icon="@Embed(source='/assets/search_16x16.gif')" click="search()" />
+		<mx:Spacer width="5" />
+	    <mx:Label id="found" fontWeight="bold" text="{'Found (' + __model.searchResults.length + ')'}"/>
+	    <mx:ComboBox id="searchResults" 
+	    	dataProvider="{__model.searchResults}" labelFunction="searchCardName"
+	    	selectedIndex="-1"
+	    	prompt="Search Results" change="goToCard()"
+	    	width="543" />
+	</mx:HBox>
+		
+</mx:Module>

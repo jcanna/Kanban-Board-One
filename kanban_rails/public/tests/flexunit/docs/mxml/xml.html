@@ -1,0 +1,88 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MXML Tags</title>
+<link rel="stylesheet" href="../style.css" type="text/css">
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../asdoc.js"></script>
+<h2>
+<font size="-1">Compiler Tags</font>
+<br>XML</h2>
+<hr>
+<p></p>
+<b>XML</b>
+<br>
+	Tag implemented by the compiler
+
+
+<p>You can declare a data model in MXML in an &lt;mx:XML&gt; tag. An &lt;mx:XML&gt;
+  tag represents literal XML data in an ActionScript XMLnode object. It is currently
+  easier to use the &lt;mx:Model&gt; tag to manipulate a model as a tree of ActionScript
+  objects. </p>
+
+	<p><b>MXML Syntax</b></p>
+	<p></p>You can place an &lt;mx:XML&gt; tag in a Flex application file or in an MXML component file.
+	The tag must have an id value and it cannot be the root tag of an MXML component. The &lt;mx:XML&gt;
+	tag has the following syntax:
+	<pre>
+	&lt;mx:XML
+	   id="modelID"
+	   format="e4x|xml"&gt;
+	   model declaration
+	&lt;/mx:XML&gt;	</pre>
+
+	<p>or:</p>
+	<PRE>
+	&lt;mx:XML
+	   id="modelID"
+	   format="e4x|xml"
+	   source="fileName"
+	   /&gt;</pre>
+
+	<p>The <code>format</code> property specifies <code>e4x</code> to create an XML object, which implements
+	the XML-handling standards defined in the ECMA-357 specification (known as "E4X").
+	For backward compatibility, when the <code>format</code> property is not explicitly set, the type of the object created is flash.xml.XMLNode.
+	.
+	The <code>source</code> property specifies an external source, such as a file, for the data model.
+	The external source can	contain static data and data binding expressions. The compiler reads the source
+	value and compiles the source into the application; the <code>source</code> value is not read at runtime. </p>
+
+
+
+<!-- <p>The following example uses the <mx:XML> tag to define a model for Menu control:</p>
+	<pre>
+	&lt;mx:XML id="myMenuModel"&gt;
+	   &lt;menuitem label="MenuItem A" &gt;
+		  &lt;menuitem label="SubMenuItem 1-A" /&gt;
+		  &lt;menuitem label="SubMenuItem 2-A"&gt;
+	   &lt;/menuitem&gt;
+	   &lt;menuitem label="MenuItem B" /&gt;
+	   &lt;menuitem label="MenuItem C" type="check" /&gt;
+	   &lt;menuitem type="separator" /&gt;
+	   &lt;menuitem label="MenuItem D" &gt;
+		   &lt;menuitem label="SubMenuItem 1-D" type="radio" groupName="one" /&gt;
+		   &lt;menuitem label="SubMenuItem 2-D" type="radio" groupName="one" /&gt;
+		   &lt;menuitem label="SubMenuItem 3-D" type="radio" groupName="one" /&gt;
+	   &lt;/menuitem&gt;
+	&lt;/mx:XML&gt;
+
+
+
+	&lt;mx:Menu id="myMenu"&gt;
+	   &lt;mx:dataProvider&gt;
+		   {myMenuModel}
+	   &lt;/mx:dataProvider&gt;
+	&lt;/mx:Menu&gt;
+</pre>
+</p> -->
+<hr>
+<p></p>
+<div class="liveDocsLink">
+<center>
+<a target="mm_livedocs" href="javascript:gotoLiveDocs('mxml/xml.html','mxml-tags.html');">Submit Feedback on LiveDocs</a>
+</center>
+</div>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Tue Oct 11 2005, 23:44 PDT</center>
+</body>
+</html>

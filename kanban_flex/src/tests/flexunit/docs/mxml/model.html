@@ -1,0 +1,63 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>MXML Tags</title>
+<link rel="stylesheet" href="../style.css" type="text/css">
+</head>
+<body class="MainContent">
+<script type="text/javascript" language="javascript" src="../asdoc.js"></script>
+<h2>
+<font size="-1">Compiler Tags</font>
+<br>Model</h2>
+<hr>
+<p></p>
+<b>Model</b>
+<br>
+	Tag implemented by the compiler
+
+	<p>You use the &lt;mx:Model&gt; tag to declare a data model in MXML. An &lt;mx:Model&gt; tag is compiled into a tree of ActionScript objects;
+	the leaves of the tree are scalar values.
+
+	<p><b>MXML Syntax</b></p> <p>You can place an &lt;mx:Model&gt; tag in a Flex application file, or in an
+	MXML component file. The
+	tag must have an id value. It cannot be the root tag of an MXML component.
+	The &lt;mx:Model&gt; tag has the following syntax:
+	</p>
+	<PRE> &lt;mx:Model id="modelID"&gt;<br>   <i>model declaration</i><br> &lt;/mx:Model&gt; </pre> </p> </p>
+
+	<p>or:</p>
+	<PRE> &lt;mx:Model id="modelID" source="fileName" /&gt;</pre>
+
+	<p>where <CODE>source</CODE> specifies an external source, such as a file, for the data model.
+	The external source can	contain static data and data binding expressions. The file referenced in a
+	<CODE>source</CODE> property resides on the server and not on the client machine. The compiler reads the source
+	value and compiles the source into the application; the <CODE>source</CODE> value is not read at runtime. </p>
+
+
+
+<p>In the following example, the myEmployee model is placed in an MXML application
+  file:</p>
+	<pre>
+	&lt;?xml version="1.0"?&gt;
+	&lt;mx:Application xlmns:mx="http//www.macromedia.com/mxml/2005"&gt;
+	...
+	  &lt;mx:Model id="MyEmployee"&gt;
+	    &lt;name&gt;
+	    &lt;first&gt;Will&lt;/first&gt;
+	    &lt;last&gt;Tuckerman&lt;/last&gt;
+	    &lt;/name&gt;
+	    &lt;department&gt;Accounting&lt;/department&gt;
+	    &lt;email&gt;wtuckerman@wilsoncompany.com&lt;/email&gt;
+	  &lt;/mx:Model&gt;
+	...
+	&lt;/mx:Application&gt;</pre>
+<hr>
+<p></p>
+<div class="liveDocsLink">
+<center>
+<a target="mm_livedocs" href="javascript:gotoLiveDocs('mxml/model.html','mxml-tags.html');">Submit Feedback on LiveDocs</a>
+</center>
+</div>
+<center class="copyright">Copyright &copy; 2005 Macromedia Inc. All rights reserved.<br>Tue Oct 11 2005, 23:44 PDT</center>
+</body>
+</html>

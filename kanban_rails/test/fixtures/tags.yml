@@ -1,0 +1,14 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ tag_one:
+   id: 901
+   name: test_tag_one
+
+ tag_two:
+   id: 902
+   name: test_tag_two
+
+ tag_three:
+   id: 903
+   name: test_tag_three
+ 

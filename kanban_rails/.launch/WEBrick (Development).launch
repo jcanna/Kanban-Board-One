@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="org.rubypeople.rdt.launching.LaunchConfigurationTypeRubyApplication">
+<stringAttribute key="org.eclipse.debug.core.source_locator_id" value="org.rubypeople.rdt.debug.ui.rubySourceLocator"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+<listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
+</listAttribute>
+<stringAttribute key="org.rubypeople.rdt.launching.FILE_NAME" value="script\server"/>
+<stringAttribute key="org.rubypeople.rdt.launching.INTERPRETER_ARGUMENTS" value=""/>
+<stringAttribute key="org.rubypeople.rdt.launching.PROGRAM_ARGUMENTS" value="-e production"/>
+<stringAttribute key="org.rubypeople.rdt.launching.PROJECT_NAME" value="kanban_rails"/>
+<booleanAttribute key="org.rubypeople.rdt.launching.USE_DEFAULT_LOAD_PATH" value="true"/>
+<booleanAttribute key="org.rubypeople.rdt.launching.USE_DEFAULT_WORKING_DIRECTORY" value="true"/>
+<stringAttribute key="org.rubypeople.rdt.launching.VM_INSTALL_NAME" value="ruby"/>
+<stringAttribute key="org.rubypeople.rdt.launching.WORKING_DIRECTORY" value=""/>
+</launchConfiguration>

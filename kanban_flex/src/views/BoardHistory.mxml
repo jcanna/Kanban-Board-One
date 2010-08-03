@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<panel:SuperPanelPlus 
+	xmlns:mx="http://www.adobe.com/2006/mxml"
+	xmlns:panel="extensions.*" 
+	width="800" height="600"
+	creationComplete="init()"
+	mouseEnabled="true"
+	title="Board History"
+	showControls="true" 
+	styleColor="0x666666" 
+	selectedBorderAlpha=".95" 
+	unselectedBorderAlpha=".75" 
+	moveAlpha=".5" 
+	highlightAlpha1=".3" 
+	highlightAlpha2=".1" 
+	dragEnabled="true" 
+	resizeEnabled="true"
+	escapeCloseEnabled="true"
+	layout="vertical"
+	horizontalAlign="center"
+	closeClickEvent="PopUpManager.removePopUp(this)" 
+	x="63" y="28" backgroundColor="#ffffff" borderColor="#666666">
+
+    <mx:Script>
+        <![CDATA[
+        	import mx.binding.utils.ChangeWatcher;
+        	import models.Card_History;
+        	import models.Board;
+        	import helpers.DateHelper;
+        	import mx.events.PropertyChangeEvent;
+        	import mx.charts.series.AreaSeries;
+        	import models.Column;
+        	import mx.charts.chartClasses.Series;
+        	import mx.controls.Alert;
+            import mx.collections.ArrayCollection;
+        	import mx.formatters.NumberFormatter;
+			import mx.managers.PopUpManager;
+	        import flash.system.System;
+        	import model.ModelLocator;
+        	import helpers.StringHelper;
+
+			private static var COMPLETED:String = 'Completed';
+
+            [Bindable]
+			public var __model:ModelLocator = ModelLocator.getInstance();
+			[Bindable]
+			public var myContextMenu:ContextMenu = new ContextMenu();
+			[Bindable]
+			private var cH:Array = [];
+			[Bindable]
+			private var cHAdjusted:Array = [];
+			[Bindable]
+			private var days:uint = 1;
+			[Bindable]
+			private var beginSliderMax:uint = 2;
+			[Bindable]
+			private var endSliderMin:uint = 1;
+			[Bindable]
+			private var countWeekends:Boolean = false;
+			[Bindable]
+			private var earliestDay:Date = new Date();
+			[Bindable]
+			private var latestDay:Date = new Date();
+			[Bindable]
+			private var workInProgressAvg:String = "";
+			[Bindable]
+			private var cycleTimeAvg:String = "";
+
+			private	var nf:NumberFormatter = new NumberFormatter();
+
+			private function init():void
+			{
+				myContextMenu.hideBuiltInItems();
+            	var item:ContextMenuItem = new ContextMenuItem("Export Table to TSV for Excel");
+            	myContextMenu.customItems.push(item);
+            	item.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, exportAsTSVtoClipBoard);
+            	this.contextMenu = myContextMenu;
+			}
+
+			private var cardDetailActivityWatcher:ChangeWatcher = ChangeWatcher.watch( 
+			 	this, ["__model","currentBoardHistory"], setBoard );
+
+			private function setBoard( pce:PropertyChangeEvent ):void
+			{
+				if ( pce.newValue == null ) return;
+				this.earliestDay = pce.newValue.earliestDay;
+				calculateCumulativeHistories( pce.newValue );
+			}
+			
+	        public function myColStyleFunc(data:Object, col:AdvancedDataGridColumn):Object
+	        {
+                return {color:0x000000};
+	        } 
+	        
+	        private function setCFDSeries():void
+	        {
+	        	var columns:ArrayCollection = __model.currentBoard.columns;
+	            var allSeries:Array = new Array();
+				for(var i:uint = 0; i < columns.length; i++)
+				{
+					var areaSeries:AreaSeries = new AreaSeries();
+					areaSeries.yField = StringHelper.removeSpaces(columns[i].name);
+					areaSeries.displayName = columns[i].name;
+					allSeries.push( areaSeries );
+                }
+				//Add final 'Completed' column
+				var areaSeries:AreaSeries = new AreaSeries();
+				areaSeries.yField = "Completed";
+				areaSeries.displayName = "*Completed*";
+				allSeries.push( areaSeries );
+
+				cumulativeFlowChart.series = allSeries;
+	        } 
+	         
+	        public function exportAsTSVtoClipBoard(event:Event):void
+	        {
+	            var TSVString:String = "";
+	
+	            //create the headers row
+	            TSVString += "Column Name" + "\t";
+	            TSVString += "Card Id" + "\t";
+	            TSVString += "Hours In Column" + "\n";
+				//create the data rows
+	            for each(var item:Object in __model.currentBoardHistory.cardHistories)
+	            {
+	                TSVString += item.column_name + "\t";
+	                TSVString += item.card_id + "\t";
+	                TSVString += this.nv.format(item.in_column_hours) + "\n";
+	            }
+	               
+	            // Copy the TSV string to the clipboard
+	            System.setClipboard(TSVString);
+               	Alert.show("The table has been copied to the clipboard, and is ready to paste into Excel, etc..");
+
+	        }	         
+
+			private function getLastColumn(columns:ArrayCollection):Column
+			{
+				var lastColumn:Column = new Column();
+				var lastPosition = 0;
+				for each (var column:Column in columns)
+				{
+					if (column.position > lastPosition) lastColumn = column;
+				}
+				return lastColumn;
+			}
+	
+			private function calculateCumulativeHistories(board:Board):void
+			{
+				var numberOfDays:Number = 
+					(this.latestDay.getTime() - this.earliestDay.getTime()) / DateHelper.millisecondsPerDay;
+				var lastColumn:Column = getLastColumn(board.columns);
+	
+				var cumulativeHistories:Array = [];
+				this.days = 1;
+				for(var i:uint = 0; i < numberOfDays+1; i++)
+				{
+					var currentDay:Date = new Date( this.earliestDay.getTime() + ( i * DateHelper.millisecondsPerDay) );
+					//Skip weekend days unless selected to include them
+					if (!countWeekends && (currentDay.getDay() == 0 || currentDay.getDay() == 6)) continue;
+					var c:String = currentDay.toString();
+	
+					var results:Object = new Object();
+					results['Day'] = this.days++ + " - " + currentDay.toDateString().substr(4,6);
+	
+					for each (var column:Column in board.columns)
+					{
+						var cardsInColumnCount:uint = 0;
+						for each (var cardHistory:Card_History in column.calculatedHistories)
+						{
+							if (currentDay.getTime() >= cardHistory.entered.getTime() &&
+								currentDay.getTime() <= cardHistory.left.getTime() )
+							{
+								cardsInColumnCount++;
+							}
+						}
+						for each (var cardHistory:Card_History in column.noMatchHistories)
+						{
+							if (currentDay.getTime() >= cardHistory.entered.getTime())
+							{
+								cardsInColumnCount++;
+							} 
+						}
+						results[ StringHelper.removeSpaces(column.name) ] = cardsInColumnCount;
+					}
+					addCompletionColumn(lastColumn.calculatedHistories, currentDay, results);
+	
+					cumulativeHistories.push( results );
+				}
+				this.cHAdjusted = this.cH = cumulativeHistories;
+				this.beginSliderMax = this.days - 2;
+				this.endSliderMin = 3;
+				calculateWorkInProgress();
+				calculateCycleTime();
+			}
+	
+			//This method will add the final completion data into the results
+			//It is making a huge and fallable *assumption* that when a card leaves
+			//the last column, it is completed.  It is very possible for that card to
+			//have simply been moved backwards on the kanban board to a previous column.  		
+			private function addCompletionColumn(cH:ArrayCollection, cDay:Date, res:Object):void
+			{
+				var cardsInColumnCount:uint = 0;
+				for each (var cardHistory:Card_History in cH)
+				{
+					if (cDay.getTime() > cardHistory.left.getTime() )
+					{
+						cardsInColumnCount++;
+					}
+				}
+				res[ COMPLETED ] = cardsInColumnCount;
+				
+			}
+
+			public function doZoom(event:MouseEvent):void {
+                if (zoomAll.isPlaying) {
+                	zoomAll.reverse();
+                }
+                else {
+                    zoomAll.play([event.target], event.type == MouseEvent.ROLL_OUT ? true : false);
+                }
+            }
+            private function slidingBegin():void {
+            	this.endSliderMin = this.beginSlider.value + 2;
+            	changeDataProvider();
+            }
+            private function slidingEnd():void {
+            	this.beginSliderMax = this.endSlider.value - 2;
+            	changeDataProvider();
+            }
+            private function changeDataProvider():void
+            {
+				this.cHAdjusted = [];
+				var adjustedDays:uint = 0;
+				for(var i:uint = beginSlider.value-1; i < endSlider.value; i++)
+				{
+					this.cHAdjusted[adjustedDays++] = this.cH[i];
+				}
+				if (adjustedDays > 1) {
+					calculateWorkInProgress();
+					calculateCycleTime();
+				}
+            }
+            //While we are attempting to calculate the work in process average
+            //We assume that the first column in the board is the 'start' of work
+            private function calculateWorkInProgress():void
+            {
+            	if (this.cHAdjusted == null || this.cHAdjusted.length < 1) {
+            		this.workInProgressAvg = "N/A";
+            		return;
+            	}
+				var beginKey:String = StringHelper.removeSpaces(__model.currentBoardHistory.columns[0].name);
+				var wip:int = 0;
+				for(var i:uint = 0; i < this.cHAdjusted.length-1; i++)
+				{
+					wip += (this.cHAdjusted[i][beginKey] - this.cHAdjusted[i][COMPLETED]);
+				}
+				var wipAvg:Number = wip / this.cHAdjusted.length-1;
+				this.workInProgressAvg = formatAvg( wipAvg, this.cHAdjusted.length-1 );
+            }
+            //While we are attempting to calculate the cycle time average
+            //We assume that the beginning of first column in the board is the 'start' of work
+            //and the ending of Completion
+            private function calculateCycleTime():void
+            {
+            	if (this.cHAdjusted == null || this.cHAdjusted.length < 1) {
+            		this.cycleTimeAvg = "N/A";
+            		return;
+            	}
+				var beginKey:String = StringHelper.removeSpaces(__model.currentBoardHistory.columns[0].name);
+				var n:int = 0;
+				var cycleDays:int = 0;
+				var startedIdx:int = 0;
+				for(var i:uint = 0; i < this.cHAdjusted.length-1; i++)	{
+					if ( this.cHAdjusted[i][beginKey] > startedIdx )
+					{
+						startedIdx = this.cHAdjusted[i][beginKey];
+						for(var j:uint = i+1; j < this.cHAdjusted.length-1; j++)	{
+							if ( this.cHAdjusted[j][COMPLETED] == null) break;
+							if ( this.cHAdjusted[j][COMPLETED] >= startedIdx)
+							{
+								n++;
+								cycleDays += j-i;
+								break;
+							}							
+						}
+					}
+				}
+				var cTAvg:Number = cycleDays / n;
+				this.cycleTimeAvg = formatAvg( cTAvg, n );
+            }
+
+			private function formatAvg( avg:Number, n:int ):String {
+				nf.precision = 3;
+				nf.rounding = "nearest";
+				var returnAvg:String = nf.format(avg);
+				returnAvg += " (n=";
+				returnAvg += n;
+				return returnAvg += ")";
+			}
+
+			private function flipWeekend():void
+            {
+            	countWeekends = weekendSelector.selected;
+            	beginSlider.value = 1;
+            	endSlider.value = this.cH.length;
+            	calculateCumulativeHistories( __model.currentBoardHistory );
+            }
+            
+        ]]>
+    </mx:Script>
+    
+	<mx:Zoom id="zoomAll" zoomWidthTo="1.4" zoomHeightTo="1.4" zoomWidthFrom="1" zoomHeightFrom="1"  />
+		 <mx:HBox>
+	       <mx:AreaChart id="cumulativeFlowChart" color="0x323232" height="100%"
+	             showDataTips="true" 
+	             creationComplete="setCFDSeries()"
+	             dataProvider="{cHAdjusted}"
+	             rollOver="doZoom(event)" rollOut="doZoom(event)" >
+	           <mx:verticalAxis>
+	               <mx:LinearAxis baseAtZero="false" />
+	           </mx:verticalAxis>       
+	           <mx:horizontalAxis>
+	               <mx:CategoryAxis categoryField="Day"/>
+	           </mx:horizontalAxis>
+	       </mx:AreaChart>
+	       <mx:VBox horizontalAlign="right">
+		       <mx:Legend dataProvider="{cumulativeFlowChart}" verticalAlign="middle" color="0x323232"/>
+			   <mx:Spacer height="10" />
+			   <mx:Label fontWeight="bold" text="Adjust Start Day" />
+		       <mx:HSlider id="beginSlider" minimum="1" maximum="{beginSliderMax}" value="1" dataTipPlacement="top" tickColor="0x323232"
+		            snapInterval="1" tickInterval="1" labels="['1','End Slide']" allowTrackClick="true" 
+		            liveDragging="true" change="slidingBegin()" />
+			   <mx:Label fontWeight="bold" text="Adjust End Day" />
+		       <mx:HSlider id="endSlider" minimum="{endSliderMin}" maximum="{days}" value="{days}" dataTipPlacement="top" tickColor="0x323232"
+		            snapInterval="1" tickInterval="1" labels="['','Current']" allowTrackClick="true" 
+		            liveDragging="true" change="slidingEnd()" />
+			   <mx:Spacer height="10" />
+			   <mx:HBox>
+				   <mx:Label fontWeight="bold" text="Include Weekend Days" />
+				   <mx:CheckBox id="weekendSelector" click="flipWeekend()" 
+				   		selected="{countWeekends}" toolTip="Changing this will also reset the entire graph." /> 
+			   </mx:HBox>
+			   <mx:HBox>
+				   <mx:Label fontWeight="bold" text="WIP Avg" toolTip="Work In Process Average (in days)" />
+				   <mx:Label fontWeight="bold" color="#0033ff" text="{workInProgressAvg}" />
+			   </mx:HBox>
+			   <mx:HBox>
+				   <mx:Label fontWeight="bold" text="CT Avg" toolTip="Cycle Time Average (in days)" />
+				   <mx:Label fontWeight="bold" color="#0033ff" text="{cycleTimeAvg}" />
+			   </mx:HBox>
+	       </mx:VBox>
+		 </mx:HBox>
+                 
+	     <mx:AdvancedDataGrid id="boardHistoryADG"
+	     	dataProvider="{__model.currentBoardHistory.cardHistories}"
+	     	allowMultipleSelection="true"
+	     	width="80%" height="100%" >
+	       <mx:columns>
+	        <mx:AdvancedDataGridColumn dataField="column_name" width="220" headerText="Column Name" styleFunction="myColStyleFunc" />
+	        <mx:AdvancedDataGridColumn dataField="card_id" width="80" headerText="Card Id" textAlign="center" styleFunction="myColStyleFunc" />
+	        <mx:AdvancedDataGridColumn dataField="in_column_hours" width="120" textAlign="right" headerText="Hours In Column" styleFunction="myColStyleFunc">
+	        	<mx:formatter>
+	        		<mx:NumberFormatter id="nv" rounding="nearest" precision="2" />
+	        	</mx:formatter>
+	        </mx:AdvancedDataGridColumn>
+	       </mx:columns>
+	     </mx:AdvancedDataGrid>
+
+</panel:SuperPanelPlus>

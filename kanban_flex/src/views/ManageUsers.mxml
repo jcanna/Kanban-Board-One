@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Module xmlns:mx="http://www.adobe.com/2006/mxml"
+	layout="vertical">
+
+    <mx:Script>
+    	<![CDATA[
+    		import helpers.StringHelper;
+    		import model.ModelLocator;
+    		import mx.controls.Alert;
+    		import business.events.DeleteUserEvent;
+    		import business.events.SaveUserEvent;
+    		import models.User;
+    	
+    		[Bindable]
+    		public var user:User;
+			[Bindable]
+			public var innerModel:ModelLocator = ModelLocator.getInstance();
+
+    		public function handleSave()
+            {
+            	if (mudInput.text.length == 0) {
+            		Alert.show("Please enter a network or mud id, as it is required to add a user.",
+            			"Missing Input",4,null,setUserFocus());
+            		return;
+            	}
+            	if (firstInput.text.length == 0 || lastInput.text.length == 0) {
+            		Alert.show("Please enter both a first and last name before adding a user.",
+            			"Missing Input",4,null,setUserFocus());
+            		return;
+            	}
+            	innerModel.statusMessages.addItemAt("Adding User...",0);
+            	user = new User();
+            	user.mud_id = mudInput.text;
+            	user.first_name = firstInput.text;
+            	user.last_name = lastInput.text;
+            	var event = new SaveUserEvent(user);
+            	event.dispatch();
+            	mudInput.text = firstInput.text = lastInput.text = ""; //Blank All
+            	mudInput.setFocus();
+            }
+
+           	private function setUserFocus() {
+				if (lastInput.text.length == 0) focusManager.setFocus(lastInput);
+				if (firstInput.text.length == 0) focusManager.setFocus(firstInput);
+            	if (mudInput.text.length == 0) focusManager.setFocus(mudInput);
+           	}
+
+    		public function handleDelete()
+            {
+            	if (userChooser.selectedIndex < 1) return;
+            	innerModel.statusMessages.addItemAt("Deleting User...",0);
+            	var event = new DeleteUserEvent(userChooser.selectedItem);
+            	event.dispatch();
+            	userChooser.selectedIndex = -1;
+            }
+
+			private function fullName(item:Object):String {
+				return StringHelper.fullName( item );
+			}
+
+    	]]>
+    </mx:Script>	
+    
+    
+	<mx:Form name="Users" id="usersForm"
+	  		horizontalGap="8" verticalGap="6" defaultButton="{okButton}" >
+		<mx:FormItem label="Network Id" toolTip="Enter their mud id" fontWeight="bold" required="true">
+			<mx:TextInput width="120" maxChars="9" id="mudInput" />
+		</mx:FormItem>
+	  <mx:FormItem label="First Name" fontWeight="bold" required="true">
+			<mx:TextInput id="firstInput" width="120" />
+	  </mx:FormItem>
+	  <mx:FormItem label="Last Name" fontWeight="bold" required="true">
+		  <mx:HBox>
+			<mx:TextInput id="lastInput" width="120" />
+			<mx:Button label="Add User" id="okButton" click="handleSave()"/>
+		  </mx:HBox>
+	  </mx:FormItem>
+		<mx:FormItem label="Delete User" fontWeight="bold">
+		  <mx:HBox>
+		 	<mx:ComboBox id="userChooser"
+		    	width="120"
+		    	dataProvider="{innerModel.users}"
+		    	selectedIndex="-1"
+		    	labelFunction="fullName"
+		    	prompt="Select User..."
+		    	/>
+			<mx:Button label="Delete" id="deleteButton" click="handleDelete()"/>
+		  </mx:HBox>
+	  </mx:FormItem>
+	</mx:Form>
+</mx:Module>

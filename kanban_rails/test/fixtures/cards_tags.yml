@@ -1,0 +1,22 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+ tag_one_card_one:
+   card_id: 1
+   tag_id: 901
+
+ tag_one_card_two:
+   card_id: 2
+   tag_id: 901
+
+ tag_one_card_three:
+   card_id: 3
+   tag_id: 901
+
+ tag_two_card_one:
+   card_id: 1
+   tag_id: 902
+
+ tag_three_card_three:
+   card_id: 3
+   tag_id: 903
+   
